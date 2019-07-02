@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #Full Stack Open 2019 Exercises
 
 The course is an introduction to modern web development with Javascript, focusing on both Front end and Back end by building single page applications with ReactJS that use REST APIs built with Node.js. The course is organised virtually in 9 parts by University of Helsinki and its partners:
