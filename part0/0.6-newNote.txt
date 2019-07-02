@@ -1,0 +1,8 @@
+browser -> server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa 
+server -> browser: {content: "Javascript fatigue", date: "2019-07-02T17:59:11.473Z"}
+
+note over browser:
+browser starts executing js-code
+that post new content in JSON format from server,
+and later requests JSON data from server without asking a redirect
+end note
