@@ -7,13 +7,9 @@ const Statistics = ({ good, neutral, bad }) => {
       <p>Good is {good}</p>
       <p>Neutral is {neutral}</p>
       <p>Bad is {bad}</p>
-      {total > 0 && (
-        <div>
-          <p>All is {total}</p>
-          <p>Average is {total / 3}</p>
-          <p>Positive is {good / total}%</p>
-        </div>
-      )}
+      <p>All is {total}</p>
+      <p>Average is {total / 3}</p>
+      <p>Positive is {good / total}%</p>
     </div>
   );
 };
