@@ -10,8 +10,8 @@ const App = () => {
   const [bad, setBad] = useState(0);
 
   const total = good + neutral + bad;
-  const average = total / 3;
-  const positivity = good / total + "%";
+  const average = (total / 3).toFixed(1);
+  const positivity = ((good / total) * 100).toFixed(1) + "%";
 
   return (
     <div>
@@ -23,14 +23,16 @@ const App = () => {
       {total === 0 ? (
         <p>No feedback given</p>
       ) : (
-        <div>
-          <Statistics text="Good" value={good} />
-          <Statistics text="Bad" value={bad} />
-          <Statistics text="Neutral" value={neutral} />
-          <Statistics text="All" value={total} />
-          <Statistics text="Average" value={average} />
-          <Statistics text="Positive" value={positivity} />
-        </div>
+        <table>
+          <tbody>
+            <Statistics text="Good" value={good} />
+            <Statistics text="Bad" value={bad} />
+            <Statistics text="Neutral" value={neutral} />
+            <Statistics text="All" value={total} />
+            <Statistics text="Average" value={average} />
+            <Statistics text="Positive" value={positivity} />
+          </tbody>
+        </table>
       )}
     </div>
   );

@@ -1,9 +1,10 @@
 import React from "react";
 
 const Statistics = ({ text, value }) => (
-  <p>
-    {text} is {value}
-  </p>
+  <tr>
+    <td>{text}</td>
+    <td>{value}</td>
+  </tr>
 );
 
 export default Statistics;
