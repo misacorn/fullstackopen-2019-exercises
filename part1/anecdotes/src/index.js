@@ -1,14 +1,31 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 
+const MostVoted = ({ votes, anecdotes }) => {
+  const mostVotedNumber = Math.max(...Object.values(votes));
+  const mostVotedQuote = Object.keys(votes)
+    .filter(v => votes[v] === mostVotedNumber)
+    .join(",");
+  return (
+    <div>
+      {mostVotedQuote.length > 1 && mostVotedNumber > 0 ? (
+        <p>There are more than 1 most voted quote!</p>
+      ) : (
+        <p>{anecdotes[mostVotedQuote]}</p>
+      )}
+      {mostVotedNumber > 0 && <p>has {mostVotedNumber} votes</p>}
+    </div>
+  );
+};
+
 const App = ({ anecdotes, votesObj }) => {
   const [selected, setSelected] = useState(0);
   const [votes, setVotes] = useState(votesObj);
-
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       <p>{anecdotes[selected]}</p>
-      <p>has {votes[selected]}</p>
+      <p>has {votes[selected]} votes</p>
       <button
         onClick={() => {
           setVotes({ ...votes, [selected]: votes[selected] + 1 });
@@ -23,6 +40,8 @@ const App = ({ anecdotes, votesObj }) => {
       >
         Next Anecdote
       </button>
+      <h1>Anecdote with most votes</h1>
+      <MostVoted votes={votes} anecdotes={anecdotes} />
     </div>
   );
 };
