@@ -1,14 +1,14 @@
 import React from "react";
 
 import Header from "./Header";
-import Content from "./Content";
-import Total from "./Total";
+// import Content from "./Content";
+// import Total from "./Total";
 
-const Course = ({ course }) => (
+const Course = ({ courses }) => (
   <>
-    <Header course={course.name} />
-    <Content parts={course.parts} />
-    <Total parts={course.parts} />
+    <Header courses={courses} />
+    {/* <Content courses={courses} /> */}
+    {/* <Total courses={courses} /> */}
   </>
 );
 
