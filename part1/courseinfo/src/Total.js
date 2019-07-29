@@ -1,13 +1,8 @@
 import React from "react";
 
-const Total = props => (
-  <p style={{ fontWeight: "bold" }}>
-    Total of{" "}
-    {props.parts[0].exercises +
-      props.parts[1].exercises +
-      props.parts[2].exercises}{" "}
-    exercises
-  </p>
-);
+const Total = ({ parts }) => {
+  const total = parts.reduce((total, part) => total + part.exercises, 0);
+  return <p style={{ fontWeight: "bold" }}>Total of {total} exercises</p>;
+};
 
 export default Total;
