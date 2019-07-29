@@ -1,9 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import Header from "./Header";
-import Content from "./Content";
-import Total from "./Total";
+import Course from "./Course";
 
 const App = () => {
   const course = {
@@ -23,13 +21,7 @@ const App = () => {
       }
     ]
   };
-  return (
-    <div>
-      <Header course={course.name} />
-      <Content parts={course.parts} />
-      <Total parts={course.parts} />
-    </div>
-  );
+  return <Course course={course} />;
 };
 
 ReactDOM.render(<App />, document.getElementById("root"));
