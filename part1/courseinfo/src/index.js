@@ -48,6 +48,7 @@ const App = () => {
       ]
     }
   ];
+
   return <Course courses={courses} />;
 };
 
