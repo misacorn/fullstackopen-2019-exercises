@@ -1,22 +1,22 @@
 import React from "react";
+
 import Header from "./Header";
 import Part from "./Part";
+import Total from "./Total";
 
 const Content = ({ courses }) => {
   return (
-    <div>
+    <>
       {courses.map(course => (
         <div key={course.name}>
           <Header name={course.name} />
           {course.parts.map(part => (
-            <Part name={part.name} exercises={part.exercises} key={part.name}>
-              {part.name}
-              {part.exercises}
-            </Part>
+            <Part name={part.name} exercises={part.exercises} key={part.name} />
           ))}
+          <Total parts={course.parts} />
         </div>
       ))}
-    </div>
+    </>
   );
 };
 
