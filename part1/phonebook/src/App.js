@@ -4,7 +4,7 @@ import "./App.css";
 const Name = ({ person }) => <li>{person.name}</li>;
 
 const App = () => {
-  const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
+  const [persons, setPersons] = useState([{ name: "Arto Hellas", id: 0 }]);
   const [newName, setNewName] = useState("");
 
   const handleNameChange = e => {
@@ -13,13 +13,23 @@ const App = () => {
 
   const addName = e => {
     e.preventDefault();
-    const nameObj = { name: newName };
-    setPersons(persons.concat(nameObj));
-    setNewName("");
+    const nameFilter = persons.filter(person => person.name === newName);
+    if (nameFilter.length === 0) {
+      const nameObj = {
+        name: newName,
+        date: new Date().toISOString(),
+        // important: Math.random() > 0.5,
+        id: persons.length + 1
+      };
+      setPersons(persons.concat(nameObj));
+      setNewName("");
+    } else {
+      window.alert(`${newName} is already added to phonebook!`);
+    }
   };
 
   const rows = () =>
-    persons.map(person => <Name key={person.name} person={person} />);
+    persons.map(person => <Name key={person.id} person={person} />);
 
   return (
     <div>
