@@ -1,15 +1,22 @@
 import React, { useState } from "react";
 import "./App.css";
 
-const Name = ({ person }) => <li>{person.name}</li>;
+const Person = ({ person }) => (
+  <li>
+    {person.name} - {person.number}
+  </li>
+);
 
 const App = () => {
-  const [persons, setPersons] = useState([{ name: "Arto Hellas", id: 0 }]);
+  const [persons, setPersons] = useState([
+    { name: "Arto Hellas", number: "0401234567", id: 0 }
+  ]);
   const [newName, setNewName] = useState("");
+  const [newNumber, setNewNumber] = useState("");
 
-  const handleNameChange = e => {
-    setNewName(e.target.value);
-  };
+  const handleNameChange = e => setNewName(e.target.value);
+
+  const handleNumberChange = e => setNewNumber(e.target.value);
 
   const addName = e => {
     e.preventDefault();
@@ -17,8 +24,7 @@ const App = () => {
     if (nameFilter.length === 0) {
       const nameObj = {
         name: newName,
-        date: new Date().toISOString(),
-        // important: Math.random() > 0.5,
+        number: newNumber,
         id: persons.length + 1
       };
       setPersons(persons.concat(nameObj));
@@ -29,7 +35,7 @@ const App = () => {
   };
 
   const rows = () =>
-    persons.map(person => <Name key={person.id} person={person} />);
+    persons.map(person => <Person key={person.id} person={person} />);
 
   return (
     <div>
@@ -37,6 +43,9 @@ const App = () => {
       <form onSubmit={addName}>
         <div>
           Name: <input value={newName} onChange={handleNameChange} />
+        </div>
+        <div>
+          Number: <input value={newNumber} onChange={handleNumberChange} />
         </div>
         <div>
           <button type="submit">Add</button>
