@@ -9,14 +9,22 @@ const Person = ({ person }) => (
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: "Arto Hellas", number: "0401234567", id: 0 }
+    { name: "Arto Hellas", number: "040-123456", id: 0 },
+    { name: "Ada Lovelace", number: "39-44-5323523", id: 1 },
+    { name: "Dan Abramov", number: "12-43-234345", id: 2 },
+    { name: "Mary Poppendieck", number: "39-23-6423122", id: 3 }
   ]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
+  const [nameSearch, setSearchName] = useState("");
 
   const handleNameChange = e => setNewName(e.target.value);
 
   const handleNumberChange = e => setNewNumber(e.target.value);
+
+  const handleNameSearch = e => {
+    setSearchName(e.target.value);
+  };
 
   const addName = e => {
     e.preventDefault();
@@ -29,17 +37,27 @@ const App = () => {
       };
       setPersons(persons.concat(nameObj));
       setNewName("");
+      setNewNumber("");
     } else {
       window.alert(`${newName} is already added to phonebook!`);
     }
   };
 
   const rows = () =>
-    persons.map(person => <Person key={person.id} person={person} />);
+    persons
+      .filter(person =>
+        person.name.toLowerCase().includes(nameSearch.toLowerCase())
+      )
+      .map(person => <Person key={person.id} person={person} />);
 
   return (
-    <div>
+    <>
       <h2>Phonebook</h2>
+      <div>
+        Filter shown with{" "}
+        <input value={nameSearch} onChange={handleNameSearch} />
+      </div>
+      <h2>Add a new person</h2>
       <form onSubmit={addName}>
         <div>
           Name: <input value={newName} onChange={handleNameChange} />
@@ -53,7 +71,7 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       <ul>{rows()}</ul>
-    </div>
+    </>
   );
 };
 
