@@ -42,7 +42,7 @@ const App = () => {
             ))}
           </div>
         ) : filterRows.length === 1 ? (
-          <Country countryFound={filterRows} />
+          <Country country={filterRows} />
         ) : (
           <div>Cannot find the country!</div>
         )}
