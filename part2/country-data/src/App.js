@@ -22,7 +22,8 @@ const App = () => {
   const filterRows = countries.filter(country =>
     country.name.toLowerCase().includes(search.trim().toLowerCase())
   );
-  // .map(country => <div key={country.callingCodes[0]}>{country.name}</div>);
+
+  const showCountry = country => setSearch(country.name.toLowerCase());
   return (
     <>
       <div>
@@ -34,7 +35,10 @@ const App = () => {
         ) : filterRows.length > 1 && filterRows.length < 10 ? (
           <div>
             {filterRows.map(country => (
-              <div key={country.callingCodes[0]}>{country.name}</div>
+              <div key={country.callingCodes[0]}>
+                {country.name}
+                <button onClick={() => showCountry(country)}>Show</button>
+              </div>
             ))}
           </div>
         ) : filterRows.length === 1 ? (
