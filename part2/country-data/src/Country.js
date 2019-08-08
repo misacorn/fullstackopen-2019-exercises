@@ -17,24 +17,19 @@ const Country = ({ country }) => {
       });
   }, [country]);
 
-  console.log(weather);
-
-  // const temperature = (weather.main.temp) => {weather.main.temp - 273.15};
-  // const speed = s => (s * 1.609).toFixed(2);
-
   return (
     <>
       <h1>{country[0].name}</h1>
       <div>Capital: {country[0].capital}</div>
       <div>Population: {country[0].population}</div>
-      <h2>Languages</h2>
+      <h3>Languages</h3>
       <ul>
         {country[0].languages.map(language => (
           <li key={language.iso639_1}>{language.name}</li>
         ))}
       </ul>
       <img src={country[0].flag} width="200" alt="nationalFlag" />
-      <h2>Weather in {country[0].capital}</h2>
+      <h3>Weather in {country[0].capital}</h3>
       {!isEmpty(weather) && (
         <>
           <p>Temperature: {(weather.main.temp - 273.15).toFixed(2)} Celsius</p>
@@ -44,7 +39,7 @@ const Country = ({ country }) => {
               weather.weather[0].icon
             }.png`}
           />
-          <p>Speed: {(weather.wind.speed * 1.609).toFixed(2)}km/h</p>
+          <p>Wind: {(weather.wind.speed * 1.609).toFixed(2)}km/h</p>
         </>
       )}
     </>
