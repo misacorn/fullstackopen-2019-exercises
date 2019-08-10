@@ -39,6 +39,16 @@ const App = () => {
       });
     }
   };
+  const deletePerson = person => {
+    if (window.confirm(`Delete ${person.name}?`)) {
+      const newPersons = persons.filter(p => p.id !== person.id);
+      personService.deletion(person.id).then(() => {
+        setPersons([...newPersons]);
+      });
+    }
+    console.log(`Deleted ${person.name}`);
+  };
+
   const rows = persons
     .filter(person =>
       person.name.toLowerCase().includes(nameSearch.toLowerCase())
@@ -46,6 +56,7 @@ const App = () => {
     .map(person => (
       <li key={person.id}>
         {person.name} - {person.number}
+        <button onClick={() => deletePerson(person)}>Delete</button>
       </li>
     ));
 
