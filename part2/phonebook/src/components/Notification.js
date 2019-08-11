@@ -1,17 +1,22 @@
 import React from "react";
+import styled from "styled-components";
 
-const Notification = ({ message }) => {
-  const style = {
-    color: "green",
-    background: "lightgrey",
-    fontSize: "20px",
-    borderStyle: "solid",
-    borderRadius: "5px",
-    padding: "10px",
-    marginBottom: "10px"
-  };
+const NotificationWrapper = styled.div`
+  color: ${props => (props.hasError ? "red" : "green")};
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+`;
 
-  return <div style={style}>{message}</div>;
+const Notification = ({ message, hasError }) => {
+  return (
+    <NotificationWrapper hasError={hasError}>
+      <div className="message">{message}</div>
+    </NotificationWrapper>
+  );
 };
 
 export default Notification;

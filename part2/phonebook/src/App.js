@@ -11,7 +11,9 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [nameSearch, setSearchName] = useState("");
-  const [message, setMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [hasError, setHasError] = useState("");
 
   useEffect(() => {
     personService.getAll().then(initialPersons => {
@@ -38,9 +40,10 @@ const App = () => {
         setPersons([...persons, newPerson]);
         setNewName("");
         setNewNumber("");
-        setMessage(`Added ${newName}`);
+        setSuccessMessage(`Added ${newName}!`);
+        setHasError(false);
         setTimeout(() => {
-          setMessage(null);
+          setSuccessMessage(null);
         }, 5000);
       });
     } else {
@@ -53,7 +56,17 @@ const App = () => {
             setPersons(
               persons.map(p => (p.id !== changedPerson.id ? p : changedPerson))
             )
-          );
+          )
+          .catch(error => {
+            setErrorMessage(
+              `The note '${personFound.name}' was already deleted from server.`
+            );
+            setHasError(true);
+            setTimeout(() => {
+              setErrorMessage(null);
+            }, 5000);
+            setPersons(persons.filter(p => p.id !== personFound.id));
+          });
       }
     }
   };
@@ -81,7 +94,11 @@ const App = () => {
   return (
     <>
       <h2>Phonebook</h2>
-      {message ? <Notification message={message} /> : null}
+      {successMessage ? (
+        <Notification message={successMessage} hasError={hasError} />
+      ) : errorMessage ? (
+        <Notification message={errorMessage} hasError={hasError} />
+      ) : null}
       <Filter nameSearch={nameSearch} handleNameSearch={handleNameSearch} />
       <h3>Add a new person</h3>
       <PersonForm
