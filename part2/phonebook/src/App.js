@@ -37,16 +37,28 @@ const App = () => {
         setNewName("");
         setNewNumber("");
       });
+    } else {
+      if (window.confirm(`Update ${nameFilter[0].name}?`)) {
+        const personFound = persons.find(p => p.id === nameFilter[0].id);
+        const changedPerson = { ...personFound, number: newNumber };
+        personService
+          .update(changedPerson.id, changedPerson)
+          .then(
+            setPersons(
+              persons.map(p => (p.id !== changedPerson.id ? p : changedPerson))
+            )
+          );
+      }
     }
   };
+
   const deletePerson = person => {
     if (window.confirm(`Delete ${person.name}?`)) {
       const newPersons = persons.filter(p => p.id !== person.id);
       personService.deletion(person.id).then(() => {
-        setPersons([...newPersons]);
+        setPersons(newPersons);
       });
     }
-    console.log(`Deleted ${person.name}`);
   };
 
   const rows = persons
