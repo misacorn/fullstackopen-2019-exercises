@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 
+import Notification from "./components/Notification";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 import Filter from "./components/Filter";
@@ -10,6 +11,7 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [nameSearch, setSearchName] = useState("");
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     personService.getAll().then(initialPersons => {
@@ -36,6 +38,10 @@ const App = () => {
         setPersons([...persons, newPerson]);
         setNewName("");
         setNewNumber("");
+        setMessage(`Added ${newName}`);
+        setTimeout(() => {
+          setMessage(null);
+        }, 5000);
       });
     } else {
       if (window.confirm(`Update ${nameFilter[0].name}?`)) {
@@ -75,6 +81,7 @@ const App = () => {
   return (
     <>
       <h2>Phonebook</h2>
+      {message ? <Notification message={message} /> : null}
       <Filter nameSearch={nameSearch} handleNameSearch={handleNameSearch} />
       <h3>Add a new person</h3>
       <PersonForm
