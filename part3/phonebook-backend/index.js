@@ -38,6 +38,12 @@ app.get("/api/persons/:id", (req, res) => {
   person ? res.json(person) : res.status(404).end();
 });
 
+app.delete("/api/persons/:id", (req, res) => {
+  const id = Number(req.params.id);
+  persons = persons.filter(p => p.id !== id);
+  res.status(204).end();
+});
+
 app.get("/info", (req, res) => {
   const date = new Date();
   res.send(
