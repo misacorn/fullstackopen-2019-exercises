@@ -60,6 +60,20 @@ app.get("/info", (req, res) => {
 app.post("/api/persons/", (req, res) => {
   const maxId = Math.floor(Math.random() * Math.floor(1000));
 
+  if (!req.body.name || !req.body.number) {
+    return res.status(400).json({
+      error: "content missing"
+    });
+  }
+
+  const nameFilter = persons.filter(p => p.name === req.body.name);
+
+  if (nameFilter.length > 0) {
+    return res.status(400).json({
+      error: "name must be unique"
+    });
+  }
+
   const newPerson = {
     name: req.body.name,
     number: req.body.number,
