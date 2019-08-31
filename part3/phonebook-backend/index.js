@@ -26,15 +26,14 @@ app.get("/", (req, res) => {
 
 app.get("/api/persons", (req, res) => {
   Person.find({}).then(persons => {
-    // res.json(person);
     res.json(persons.map(person => person.toJSON()));
   });
 });
 
 app.get("/api/persons/:id", (req, res) => {
-  const id = Number(req.params.id);
-  const person = persons.find(p => p.id === id);
-  person ? res.json(person) : res.status(404).end();
+  Person.findById(req.params.id).then(person => {
+    res.json(person.toJSON());
+  });
 });
 
 app.delete("/api/persons/:id", (req, res) => {
@@ -54,30 +53,17 @@ app.get("/info", (req, res) => {
 });
 
 app.post("/api/persons/", (req, res) => {
-  const maxId = Math.floor(Math.random() * Math.floor(1000));
-
-  if (!req.body.name || !req.body.number) {
-    return res.status(400).json({
-      error: "content missing"
-    });
+  const body = req.body;
+  if (body.name === undefined || body.number === undefined) {
+    return res.status(400).json({ error: "content missing" });
   }
-
-  const nameFilter = persons.filter(p => p.name === req.body.name);
-
-  if (nameFilter.length > 0) {
-    return res.status(400).json({
-      error: "name must be unique"
-    });
-  }
-
-  const newPerson = {
-    name: req.body.name,
-    number: req.body.number,
-    id: maxId
-  };
-
-  persons = persons.concat(newPerson);
-  res.json(newPerson);
+  const person = new Person({
+    name: body.name,
+    number: body.number
+  });
+  person.save().then(savedPerson => {
+    res.json(savedPerson.toJSON());
+  });
 });
 
 const PORT = process.env.PORT;
