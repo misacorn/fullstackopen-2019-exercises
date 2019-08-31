@@ -11,7 +11,7 @@ const url = `mongodb+srv://Misa:${password}@cluster0-leek9.mongodb.net/phonebook
 
 mongoose.connect(url, { useNewUrlParser: true });
 
-const noteSchema = new mongoose.Schema({
+const personSchema = new mongoose.Schema({
   name: String,
   number: String
 });
