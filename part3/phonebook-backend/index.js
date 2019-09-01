@@ -25,21 +25,30 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/persons", (req, res) => {
-  Person.find({}).then(persons => {
-    res.json(persons.map(person => person.toJSON()));
-  });
+  Person.find({})
+    .then(persons => {
+      res.json(persons.map(person => person.toJSON()));
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(404).end();
+    });
 });
 
 app.get("/api/persons/:id", (req, res) => {
-  Person.findById(req.params.id).then(person => {
-    res.json(person.toJSON());
-  });
+  Person.findById(req.params.id)
+    .then(person => {
+      person ? res.json(person.toJSON()) : res.status(404).end();
+    })
+    .catch(error => next(error));
 });
 
-app.delete("/api/persons/:id", (req, res) => {
-  const id = Number(req.params.id);
-  persons = persons.filter(p => p.id !== id);
-  res.status(204).end();
+app.delete("/api/persons/:id", (req, res, next) => {
+  Person.findByIdAndRemove(req.params.id)
+    .then(result => {
+      res.status(204).end();
+    })
+    .catch(error => next(error));
 });
 
 app.get("/info", (req, res) => {
