@@ -25,14 +25,9 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/persons", (req, res) => {
-  Person.find({})
-    .then(persons => {
-      res.json(persons.map(person => person.toJSON()));
-    })
-    .catch(error => {
-      console.log(error);
-      res.status(404).end();
-    });
+  Person.find({}).then(person => {
+    res.json(person);
+  });
 });
 
 app.get("/api/persons/:id", (req, res) => {
@@ -74,6 +69,22 @@ app.post("/api/persons/", (req, res) => {
     res.json(savedPerson.toJSON());
   });
 });
+
+const unknownEndpoint = (req, res) => {
+  res.status(404).send({ error: "unknown endpoint" });
+};
+
+app.use(unknownEndpoint);
+
+const errorHandler = (error, req, res, next) => {
+  console.error(error.message);
+  if (error.name === "CastError" && error.kind === "ObjectId") {
+    return res.status(400).send({ error: "malformatted id" });
+  }
+  next(error);
+};
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
