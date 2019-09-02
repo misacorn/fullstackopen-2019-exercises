@@ -56,7 +56,7 @@ app.get("/info", (req, res) => {
   );
 });
 
-app.post("/api/persons/", (req, res) => {
+app.post("/api/persons/", (req, res, next) => {
   const body = req.body;
   if (body.name === undefined || body.number === undefined) {
     return res.status(400).json({ error: "content missing" });
@@ -65,9 +65,12 @@ app.post("/api/persons/", (req, res) => {
     name: body.name,
     number: body.number
   });
-  person.save().then(savedPerson => {
-    res.json(savedPerson.toJSON());
-  });
+  person
+    .save()
+    .then(savedPerson => {
+      res.json(savedPerson.toJSON());
+    })
+    .catch(error => next(error));
 });
 
 app.put("/api/persons/:id", (req, res, next) => {
@@ -90,9 +93,11 @@ const unknownEndpoint = (req, res) => {
 app.use(unknownEndpoint);
 
 const errorHandler = (error, req, res, next) => {
-  console.error(error.message);
+  console.log(error.name);
   if (error.name === "CastError" && error.kind === "ObjectId") {
     return res.status(400).send({ error: "malformatted id" });
+  } else if (error.name === "ValidationError") {
+    return res.status(400).json({ error: error.message });
   }
   next(error);
 };
