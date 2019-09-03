@@ -8,9 +8,8 @@ const Person = require("./models/person");
 
 const app = express();
 
-app.use(express.static("build"));
-app.use(cors());
 app.use(bodyParser.json());
+app.use(cors());
 
 morgan.token("post", function(req, res) {
   return JSON.stringify(req.body);
@@ -19,6 +18,8 @@ morgan.token("post", function(req, res) {
 app.use(
   morgan(":method :url :status :res[content-length] - :response-time ms :post")
 );
+
+app.use(express.static("build"));
 
 app.get("/", (req, res) => {
   res.send("<h1>Hello World!</h1>");
@@ -93,11 +94,10 @@ const unknownEndpoint = (req, res) => {
 app.use(unknownEndpoint);
 
 const errorHandler = (error, req, res, next) => {
-  console.log(error.name);
   if (error.name === "CastError" && error.kind === "ObjectId") {
     return res.status(400).send({ error: "malformatted id" });
   } else if (error.name === "ValidationError") {
-    return res.status(400).json({ error: error.message });
+    return res.status(400).send(error.message);
   }
   next(error);
 };

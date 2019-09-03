@@ -36,16 +36,25 @@ const App = () => {
         number: newNumber,
         id: persons.length + 1
       };
-      personService.create(nameObj).then(newPerson => {
-        setPersons([...persons, newPerson]);
-        setNewName("");
-        setNewNumber("");
-        setSuccessMessage(`Added ${newName}!`);
-        setHasError(false);
-        setTimeout(() => {
-          setSuccessMessage(null);
-        }, 5000);
-      });
+      personService
+        .create(nameObj)
+        .then(newPerson => {
+          setPersons([...persons, newPerson]);
+          setNewName("");
+          setNewNumber("");
+          setSuccessMessage(`Added ${newName}!`);
+          setHasError(false);
+          setTimeout(() => {
+            setSuccessMessage(null);
+          }, 5000);
+        })
+        .catch(error => {
+          setErrorMessage(error.response.toString());
+          setHasError(true);
+          setTimeout(() => {
+            setErrorMessage(null);
+          }, 5000);
+        });
     } else {
       if (window.confirm(`Update ${nameFilter[0].name}?`)) {
         const personFound = persons.find(p => p.id === nameFilter[0].id);
