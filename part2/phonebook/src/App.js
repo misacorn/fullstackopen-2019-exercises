@@ -49,7 +49,7 @@ const App = () => {
           }, 5000);
         })
         .catch(error => {
-          setErrorMessage(error.response.toString());
+          setErrorMessage(error.response.data.error);
           setHasError(true);
           setTimeout(() => {
             setErrorMessage(null);
