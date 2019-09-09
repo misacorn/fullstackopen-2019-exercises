@@ -12,11 +12,10 @@ const totalLikes = blogs => {
 };
 
 const favoriteBlog = blogs => {
-  return blogs.length === 0 ? 0 : Math.max(...blogs.map(blog => blog.likes));
-  // const max = blogs.reduce((prev, current) =>
-  //   prev.likes > current.likes ? prev : current
-  // );
-  // return blogs.length === 0 ? 0 : max;
+  // return blogs.length === 0 ? 0 : Math.max(...blogs.map(blog => blog.likes));
+  return blogs.reduce((prev, current) => {
+    return prev.likes > current.likes ? prev : current;
+  });
 };
 
 module.exports = {
