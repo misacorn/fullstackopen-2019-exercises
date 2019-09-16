@@ -44,6 +44,11 @@ test("amount of blogs", async () => {
   expect(res.body.length).toBe(initialBlogs.length);
 });
 
+test("unique identifier property of the blog posts is named id", async () => {
+  const res = await api.get("/api/blogs/");
+  expect(res.body[0].id).toBeDefined();
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });
