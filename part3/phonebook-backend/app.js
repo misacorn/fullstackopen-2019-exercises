@@ -7,14 +7,17 @@ const morgan = require('morgan');
 const personsRouter = require('./controllers/persons');
 const middleware = require('./utils/middleware');
 const mongoose = require('mongoose');
+const logger = require('./utils/logger');
+
+logger.info('connecting to', config.MONGODB_URI);
 
 mongoose
   .connect(config.MONGODB_URI, { useNewUrlParser: true })
   .then(() => {
-    console.log('connected to MongoDB');
+    logger.info('connected to MongoDB');
   })
   .catch(error => {
-    console.log('error connection to MongoDB:', error.message);
+    logger.error('error connection to MongoDB:', error.message);
   });
 
 morgan.token('post', function(req, res) {
