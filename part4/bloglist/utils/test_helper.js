@@ -15,6 +15,13 @@ const initialBlogs = [
     url: "https://reactpatterns.com/",
     likes: 7,
     id: "5d728cd9e0becf1d7b636c11"
+  },
+  {
+    title: "Learn Basics of React.js in 11 Minutes",
+    author: "Madhu Pathy",
+    url:
+      "https://medium.com/@madhupathy/learn-basics-of-react-js-in-3-minutes-a94cbc6f02c8",
+    id: "5d83c8baf9a2a1f7fd670248"
   }
 ];
 

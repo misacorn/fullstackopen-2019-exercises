@@ -27,9 +27,12 @@ test("a valid blog can be added ", async () => {
     title: "Learn Basics of React.js in 11 Minutes",
     author: "Madhu Pathy",
     url:
-      "https://medium.com/@madhupathy/learn-basics-of-react-js-in-3-minutes-a94cbc6f02c8",
-    likes: 15
+      "https://medium.com/@madhupathy/learn-basics-of-react-js-in-3-minutes-a94cbc6f02c8"
+    // likes: 15
   };
+  if (newBlog.likes === undefined) {
+    newBlog.likes = 0;
+  }
 
   await api
     .post("/api/blogs")
@@ -39,8 +42,10 @@ test("a valid blog can be added ", async () => {
 
   const res = await api.get("/api/blogs");
   const author = res.body.map(r => r.author);
+  const likes = res.body.map(r => r.likes);
   expect(res.body.length).toBe(helper.initialBlogs.length + 1);
   expect(author).toContain("Madhu Pathy");
+  expect(likes).toContain(0);
 });
 
 afterAll(() => {
