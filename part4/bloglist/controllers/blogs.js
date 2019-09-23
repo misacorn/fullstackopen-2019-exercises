@@ -13,9 +13,18 @@ blogsRouter.get("/", async (req, res) => {
 blogsRouter.post("/", async (req, res) => {
   try {
     const blog = await new Blog(req.body);
-    blog.save().then(result => {
-      res.status(201).json(result);
-    });
+    if (blog.url === undefined && blog.title === undefined) {
+      blog.save().then(result => {
+        res.status(404);
+      });
+    } else {
+      if (blog.likes === undefined) {
+        blog.likes = 0;
+      }
+      blog.save().then(result => {
+        res.status(201).json(result);
+      });
+    }
   } catch (exception) {
     next(exception);
   }

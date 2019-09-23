@@ -22,7 +22,7 @@ test("unique identifier property of the blog posts is named id", async () => {
   expect(res.body[0].id).toBeDefined();
 });
 
-test("a valid blog can be added ", async () => {
+test("if blog likes are missing", async () => {
   const newBlog = {
     title: "Learn Basics of React.js in 11 Minutes",
     author: "Madhu Pathy",
@@ -30,9 +30,7 @@ test("a valid blog can be added ", async () => {
       "https://medium.com/@madhupathy/learn-basics-of-react-js-in-3-minutes-a94cbc6f02c8"
     // likes: 15
   };
-  if (newBlog.likes === undefined) {
-    newBlog.likes = 0;
-  }
+
 
   await api
     .post("/api/blogs")
@@ -46,6 +44,20 @@ test("a valid blog can be added ", async () => {
   expect(res.body.length).toBe(helper.initialBlogs.length + 1);
   expect(author).toContain("Madhu Pathy");
   expect(likes).toContain(0);
+});
+
+test("if title and url are missing", async () => {
+  const newBlog = {
+    // title: "Learn Basics of React.js in 11 Minutes",
+    author: "Madhu Pathy",
+    // url:
+    //   "https://medium.com/@madhupathy/learn-basics-of-react-js-in-3-minutes-a94cbc6f02c8"
+    likes: 15
+  };
+  await api
+    .post("/api/blogs")
+    .send(newBlog)
+    .expect(404);
 });
 
 afterAll(() => {
