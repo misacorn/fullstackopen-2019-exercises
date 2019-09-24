@@ -17,7 +17,7 @@ blogsRouter.get("/:id", async (req, res, next) => {
       id ? res.json(blog.toJSON()) : res.status(404).end()
     );
   } catch (exception) {
-    next(exception);
+    res.status(400).json(exception);
   }
 });
 
