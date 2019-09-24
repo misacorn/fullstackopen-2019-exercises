@@ -10,7 +10,7 @@ blogsRouter.get("/", async (req, res, next) => {
   }
 });
 
-blogsRouter.get("/:id", async (req, res, next) => {
+blogsRouter.get("/:id", async (req, res) => {
   try {
     const id = await Blog.findById(req.params.id);
     Blog.findById(id).then(blog =>
@@ -24,15 +24,16 @@ blogsRouter.get("/:id", async (req, res, next) => {
 blogsRouter.post("/", async (req, res, next) => {
   try {
     const blog = await new Blog(req.body);
-    if (blog.url === undefined || blog.title === undefined) {
-      return res.status(400).end();
-    }
     if (blog.likes === undefined) {
       blog.likes = 0;
     }
-    blog.save().then(result => {
-      res.status(201).json(result);
-    });
+    if (blog.url && blog.title) {
+      blog.save().then(result => {
+        res.status(201).json(result);
+      });
+    } else {
+      res.status(400).end();
+    }
   } catch (exception) {
     next(exception);
   }

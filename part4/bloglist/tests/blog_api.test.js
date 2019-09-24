@@ -12,11 +12,6 @@ beforeEach(async () => {
   await Promise.all(promiseArray);
 });
 
-test("amount of blogs", async () => {
-  const res = await api.get("/api/blogs");
-  expect(res.body.length).toBe(helper.initialBlogs.length);
-});
-
 test("unique identifier property of the blog posts is named id", async () => {
   const res = await api.get("/api/blogs/");
   expect(res.body[0].id).toBeDefined();
@@ -44,18 +39,18 @@ describe("adding a new blog", () => {
     expect(likes).toContain(0);
   });
 
-  // test("if title and url are missing", async () => {
-  //   const newBlog = {
-  //     author: "Madhu Pathy",
-  //     likes: 15
-  //   };
-  //   await api
-  //     .post("/api/blogs")
-  //     .send(newBlog)
-  //     .expect(400);
-  //   const blogsAtEnd = await helper.blogsInDb();
-  //   expect(blogsAtEnd.length).toBe(helper.initialBlogs.length);
-  // });
+  test("if title and url are missing", async () => {
+    const newBlog = {
+      author: "Madhu Pathy",
+      likes: 15
+    };
+    await api
+      .post("/api/blogs")
+      .send(newBlog)
+      .expect(400);
+    const blogsAtEnd = await helper.blogsInDb();
+    expect(blogsAtEnd.length).toBe(helper.initialBlogs.length);
+  });
 });
 
 describe("viewing a specific blog", () => {
