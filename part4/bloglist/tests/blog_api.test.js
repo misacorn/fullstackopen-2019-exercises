@@ -69,11 +69,11 @@ describe("viewing a specific blog", () => {
     expect(resultBlog.body).toEqual(blogToView);
   });
 
-  // test("fails with statuscode 404 if blog does not exist", async () => {
-  //   const validNonexistingId = await helper.nonExistingId();
-  //   console.log(validNonexistingId);
-  //   await api.get(`/api/blogs/${validNonexistingId}`).expect(404);
-  // });
+  test("fails with statuscode 404 if blog does not exist", async () => {
+    const validNonexistingId = await helper.nonExistingId();
+    console.log(validNonexistingId);
+    await api.get(`/api/blogs/${validNonexistingId}`).expect(404);
+  });
 
   // test("fails with statuscode 400 id is invalid", async () => {
   //   const invalidId = "5a3d5da59070081a82a3445";
