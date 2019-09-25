@@ -90,6 +90,25 @@ describe("deleting of a blog", () => {
   });
 });
 
+describe("updating of a blog", () => {
+  test("succeeds with status code 200 if id is valid", async () => {
+    const updatedBlog = {
+      title: "Go To Statement Considered Harmful",
+      author: "Edsger W. Dijkstra",
+      url:
+        "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
+      likes: 7
+    };
+    const blogsAtStart = await helper.blogsInDb();
+    const blogToUpdate = blogsAtStart[0];
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(updatedBlog)
+      .expect(200)
+      .expect("Content-Type", /application\/json/);
+  });
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });
