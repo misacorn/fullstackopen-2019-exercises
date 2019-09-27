@@ -19,9 +19,14 @@ usersRouter.post("/", async (req, res, next) => {
       passwordHash
     });
 
-    const savedUser = await user.save();
-
-    res.json(savedUser);
+    const users = await User.find({});
+    const uniqueUsername = users.filter(u => u.username === user.username);
+    if (uniqueUsername.length === 0) {
+      const savedUser = await user.save();
+      res.json(savedUser);
+    } else {
+      res.status(400).json({ error: "`username` to be unique" });
+    }
   } catch (exception) {
     next(exception);
   }
