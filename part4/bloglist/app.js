@@ -17,6 +17,7 @@ mongoose
   });
 
 app.use(cors());
+// parse application/x-www-form-urlencoded
 app.use(bodyParser.json());
 
 app.use("/api/blogs", blogsRouter);
