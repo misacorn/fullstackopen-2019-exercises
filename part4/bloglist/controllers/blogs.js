@@ -4,7 +4,10 @@ const User = require("../models/user");
 
 blogsRouter.get("/", async (req, res, next) => {
   try {
-    const blogs = await Blog.find({});
+    const blogs = await Blog.find({}).populate("user", {
+      username: 1,
+      name: 1
+    });
     res.json(blogs);
   } catch (exception) {
     next(exception);
@@ -20,39 +23,42 @@ blogsRouter.get("/:id", async (req, res) => {
   }
 });
 
+// blogsRouter.post("/", async (req, res, next) => {
+//   try {
+//     const blog = await new Blog(req.body);
+//     if (blog.likes === undefined) {
+//       blog.likes = 0;
+//     }
+//     if (blog.url && blog.title) {
+//       blog.save().then(result => {
+//         res.status(201).json(result);
+//       });
+//     } else {
+//       res.status(400).end();
+//     }
+//   } catch (exception) {
+//     next(exception);
+//   }
+// });
+
 blogsRouter.post("/", async (req, res, next) => {
-  // try {
-  //   const blog = await new Blog(req.body);
-  //   if (blog.likes === undefined) {
-  //     blog.likes = 0;
-  //   }
-  //   if (blog.url && blog.title) {
-  //     blog.save().then(result => {
-  //       res.status(201).json(result);
-  //     });
-  //   } else {
-  //     res.status(400).end();
-  //   }
-  // } catch (exception) {
-  //   next(exception);
-  // }
   try {
     const body = req.body;
 
     const user = await User.findById(body.userId);
 
-    const blog = {
+    const blog = new Blog({
       title: body.title,
       author: body.author,
       url: body.url,
       likes: body.likes,
-      user: user.id
-    };
+      user: user._id
+    });
 
-    const savedNote = await blog.save();
-    user.blogs = user.blogs.concat(savedNote._id);
+    const savedBlog = await blog.save();
+    user.blogs = user.blogs.concat(savedBlog._id);
     await user.save();
-    res.json(savedNote.toJSON());
+    res.json(savedBlog.toJSON());
   } catch (exception) {
     next(exception);
   }
