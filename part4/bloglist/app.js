@@ -16,6 +16,8 @@ mongoose
     console.log("error connection to MongoDB:", error.message);
   });
 
+mongoose.set("useCreateIndex", true);
+
 app.use(cors());
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.json());
