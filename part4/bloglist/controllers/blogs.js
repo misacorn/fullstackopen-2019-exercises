@@ -48,17 +48,30 @@ blogsRouter.post("/", async (req, res, next) => {
     const user = await User.findById(body.userId);
 
     const blog = new Blog({
+      url: body.url,
       title: body.title,
       author: body.author,
-      url: body.url,
-      likes: body.likes,
-      user: user._id
+      user: user._id,
+      likes: body.likes
     });
 
     const savedBlog = await blog.save();
     user.blogs = user.blogs.concat(savedBlog._id);
     await user.save();
-    res.json(savedBlog.toJSON());
+    res.status(201).json(savedBlog.toJSON());
+
+    // if (body.likes === undefined) {
+    //   blog.likes = 0;
+    // }
+
+    // if (blog.url && blog.title) {
+    //   const savedBlog = await blog.save();
+    //   user.blogs = user.blogs.concat(savedBlog._id);
+    //   await user.save();
+    //   res.status(201).json(savedBlog.toJSON());
+    // } else {
+    //   res.status(400).end();
+    // }
   } catch (exception) {
     next(exception);
   }
