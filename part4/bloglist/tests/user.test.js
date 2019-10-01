@@ -54,6 +54,52 @@ describe("when there is initially one user at db", () => {
     const usersAtEnd = await helper.usersInDb();
     expect(usersAtEnd.length).toBe(usersAtStart.length);
   });
+
+  test("creation fails if username and passwords are not long enough", async () => {
+    const usersAtStart = await helper.usersInDb();
+
+    const newUser = {
+      username: "r",
+      name: "Superuser",
+      password: "sa"
+    };
+
+    const result = await api
+      .post("/api/users")
+      .send(newUser)
+      .expect(400)
+      .expect("Content-Type", /application\/json/);
+
+    expect(result.body.error).toContain(
+      "`username` and/or `password` too short"
+    );
+
+    const usersAtEnd = await helper.usersInDb();
+    expect(usersAtEnd.length).toBe(usersAtStart.length);
+  });
+
+  test("creation fails if username and passwords are missing", async () => {
+    const usersAtStart = await helper.usersInDb();
+
+    const newUser = {
+      username: "",
+      name: "Superuser",
+      password: ""
+    };
+
+    const result = await api
+      .post("/api/users")
+      .send(newUser)
+      .expect(400)
+      .expect("Content-Type", /application\/json/);
+
+    expect(result.body.error).toContain(
+      "`username` and/or `password` are missing"
+    );
+
+    const usersAtEnd = await helper.usersInDb();
+    expect(usersAtEnd.length).toBe(usersAtStart.length);
+  });
 });
 
 afterAll(() => {
