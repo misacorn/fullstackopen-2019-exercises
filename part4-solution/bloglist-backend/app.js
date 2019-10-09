@@ -13,6 +13,7 @@ const usersRouter = require("./controllers/users");
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.static("build"));
 
 console.log("connecting to", config.MONGODB_URI);
 

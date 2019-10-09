@@ -2,13 +2,8 @@ import React, { useState } from "react";
 
 import Notification from "./components/Notification";
 import loginService from "./services/login";
-import blogService from "./services/blogs";
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
-  const [newBlog, setNewBlog] = useState("");
-
-  // const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -57,40 +52,21 @@ const App = () => {
     </form>
   );
 
-  const blogForm = () => (
-    <form onSubmit={addBlog}>
-      <input value={newBlog} onChange={handleBlogChange} />
-      <button type="submit">save</button>
-    </form>
-  );
-
-  const handleBlogChange = event => {
-    setNewBlog(event.target.value);
-  };
-
-  const addBlog = event => {
-    event.preventDefault();
-    const nameFilter = blogs.filter(blog => blog.title === newName);
-    if (nameFilter.length === 0) {
-      const nameObj = {
-        name: newName,
-        number: newNumber,
-        id: persons.length + 1
-      };
-    }
-  };
-
   return (
     <div>
-      <h1>Blogs</h1>
-      <Notification message={errorMessage} />
-      <h2>Login</h2>
+      {errorMessage && <Notification message={errorMessage} />}
       {user === null ? (
-        loginForm()
+        <div>
+          <h2>Log in to application</h2>
+          {loginForm()}
+        </div>
       ) : (
         <div>
+          <h2>Blogs</h2>
           <p>{user.name} logged in</p>
-          {blogForm()}
+          {/* {blogs.map(blog => (
+            <Blog key={blog.id} blog={blog} /> */}
+          ))}
         </div>
       )}
     </div>
