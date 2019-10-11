@@ -21,6 +21,15 @@ const App = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON);
+      setUser(user);
+      // blogService.setToken(user.token);
+    }
+  }, []);
+
   const handleLogin = async event => {
     event.preventDefault();
     try {
@@ -28,7 +37,8 @@ const App = () => {
         username,
         password
       });
-
+      window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
+      blogService.setToken(user.token);
       setUser(user);
       setUsername("");
       setPassword("");
@@ -41,46 +51,57 @@ const App = () => {
   };
 
   const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-        <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type="submit">login</button>
-    </form>
+    <div>
+      <h2>Log in to application</h2>
+      <form onSubmit={handleLogin}>
+        <div>
+          username
+          <input
+            type="text"
+            value={username}
+            name="Username"
+            onChange={({ target }) => setUsername(target.value)}
+          />
+        </div>
+        <div>
+          password
+          <input
+            type="password"
+            value={password}
+            name="Password"
+            onChange={({ target }) => setPassword(target.value)}
+          />
+        </div>
+        <button type="submit">login</button>
+      </form>
+    </div>
   );
+
+  const logout = () => {
+    window.localStorage.clear();
+    setUser("");
+    loginForm();
+  };
 
   return (
     <div>
       {errorMessage && <Notification message={errorMessage} />}
       {user === null ? (
-        <div>
-          <h2>Log in to application</h2>
-          {loginForm()}
-        </div>
+        loginForm()
       ) : (
         <div>
           <h2>Blogs</h2>
-          <p>{user.name} logged in</p>
-          {blogs.map(blog =>
-            blog.user.name === user.name ? (
-              <Blog key={blog.id} blog={blog} />
-            ) : null
-          )}
+          <div>
+            {user.name} logged in {""}
+            <button onClick={logout}>Log out</button>
+          </div>
+          <ul>
+            {blogs.map(blog =>
+              blog.user.name === user.name ? (
+                <Blog key={blog.id} blog={blog} />
+              ) : null
+            )}
+          </ul>
         </div>
       )}
     </div>
