@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 
 import Blog from "./components/Blog";
-
 import Notification from "./components/Notification";
+import Login from "./components/Login";
+
 import loginService from "./services/login";
 import blogService from "./services/blogs";
 
@@ -18,6 +19,7 @@ const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
+  const [loginVisible, setLoginVisible] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,32 +60,28 @@ const App = () => {
     }
   };
 
-  const loginForm = () => (
-    <div>
-      <h2>Log in to application</h2>
-      <form onSubmit={handleLogin}>
-        <div>
-          Username: {""}
-          <input
-            type="text"
-            value={username}
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
+  const loginForm = () => {
+    const hideWhenVisible = { display: loginVisible ? "none" : "" };
+    const showWhenVisible = { display: loginVisible ? "" : "none" };
+
+    return (
+      <div>
+        <div style={hideWhenVisible}>
+          <button onClick={() => setLoginVisible(true)}>log in</button>
         </div>
-        <div>
-          Password: {""}
-          <input
-            type="password"
-            value={password}
-            name="Password"
-            onChange={({ target }) => setPassword(target.value)}
+        <div style={showWhenVisible}>
+          <Login
+            username={username}
+            password={password}
+            handleUsernameChange={({ target }) => setUsername(target.value)}
+            handlePasswordChange={({ target }) => setPassword(target.value)}
+            handleSubmit={handleLogin}
           />
+          <button onClick={() => setLoginVisible(false)}>cancel</button>
         </div>
-        <button type="submit">login</button>
-      </form>
-    </div>
-  );
+      </div>
+    );
+  };
 
   const blogForm = () => (
     <form onSubmit={addBlog}>
@@ -137,13 +135,16 @@ const App = () => {
 
   return (
     <div>
-      {errorMessage ? (
-        <Notification message={errorMessage} />
-      ) : successMessage ? (
-        <Notification message={successMessage} />
+      {successMessage ? (
+        <Notification message={successMessage} hasError={hasError} />
+      ) : errorMessage ? (
+        <Notification message={errorMessage} hasError={hasError} />
       ) : null}
       {user === null ? (
-        loginForm()
+        <div>
+          <h2>Blogs</h2>
+          {loginForm()}
+        </div>
       ) : (
         <div>
           <h2>Blogs</h2>
