@@ -26,13 +26,14 @@ const App = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
       setUser(user);
-      // blogService.setToken(user.token);
+      blogService.setToken(user.token);
     }
   }, []);
 
   const handleLogin = async event => {
     event.preventDefault();
     try {
+      window.localStorage.removeItem("loggedBlogappUser");
       const user = await loginService.login({
         username,
         password
@@ -43,6 +44,7 @@ const App = () => {
       setUsername("");
       setPassword("");
     } catch (exception) {
+      console.log({ exception });
       setErrorMessage("Wrong credentials");
       setTimeout(() => {
         setErrorMessage(null);
@@ -78,9 +80,9 @@ const App = () => {
   );
 
   const logout = () => {
-    window.localStorage.clear();
-    setUser("");
-    loginForm();
+    window.localStorage.removeItem("loggedBlogappUser");
+    setUser(null);
+    console.log(window.localStorage);
   };
 
   return (
@@ -93,7 +95,7 @@ const App = () => {
           <h2>Blogs</h2>
           <div>
             {user.name} logged in {""}
-            <button onClick={logout}>Log out</button>
+            <button onClick={logout}>logout</button>
           </div>
           <ul>
             {blogs.map(blog =>
