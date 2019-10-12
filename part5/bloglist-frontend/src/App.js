@@ -14,6 +14,7 @@ const App = () => {
   const [likes, setLikes] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [hasError, setHasError] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
@@ -49,8 +50,8 @@ const App = () => {
       setUsername("");
       setPassword("");
     } catch (exception) {
-      console.log({ exception });
-      setErrorMessage("Wrong credentials");
+      setErrorMessage(exception.response.data.error);
+      setHasError(true);
       setTimeout(() => {
         setErrorMessage(null);
       }, 5000);
@@ -120,7 +121,8 @@ const App = () => {
       setAuthor("");
       setUrl("");
       setLikes("");
-      setSuccessMessage(`Added a new blog!`);
+      setSuccessMessage(`Added a new blog: ${title} by ${author}`);
+      setHasError(false);
       setTimeout(() => {
         setSuccessMessage(null);
       }, 5000);

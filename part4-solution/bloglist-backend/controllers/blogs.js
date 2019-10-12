@@ -13,13 +13,13 @@ router.post("/", async (request, response) => {
   const blog = new Blog(request.body);
 
   if (!request.token) {
-    return response.status(401).json({ error: "token missing or invalid" });
+    return response.status(401).json({ error: "Token missing or invalid" });
   }
 
   const decodedToken = jwt.verify(request.token, process.env.SECRET);
 
   if (!decodedToken.id) {
-    return response.status(401).json({ error: "token missing or invalid" });
+    return response.status(401).json({ error: "Token missing or invalid" });
   }
 
   const user = await User.findById(decodedToken.id);
@@ -29,7 +29,7 @@ router.post("/", async (request, response) => {
   if (!blog.url || !blog.title) {
     return response
       .status(400)
-      .send({ error: "title or url missing" })
+      .send({ error: "Title or url missing" })
       .end();
   }
 
@@ -63,13 +63,13 @@ router.put("/:id", async (request, response) => {
 
 router.delete("/:id", async (request, response) => {
   if (!request.token) {
-    return response.status(401).json({ error: "token missing" });
+    return response.status(401).json({ error: "Token missing" });
   }
 
   const decodedToken = jwt.verify(request.token, process.env.SECRET);
 
   if (!decodedToken.id) {
-    return response.status(401).json({ error: "token missing or invalid" });
+    return response.status(401).json({ error: "Token missing or invalid" });
   }
 
   const blog = await Blog.findById(request.params.id);
