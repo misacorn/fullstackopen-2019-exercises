@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Blog from "./components/Blog";
 import Notification from "./components/Notification";
 import Login from "./components/Login";
+import CreateBlog from "./components/CreateBlog";
 
 import loginService from "./services/login";
 import blogService from "./services/blogs";
@@ -20,6 +21,7 @@ const App = () => {
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
   const [loginVisible, setLoginVisible] = useState(false);
+  const [createVisible, setCreateVibisle] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -75,7 +77,7 @@ const App = () => {
             password={password}
             handleUsernameChange={({ target }) => setUsername(target.value)}
             handlePasswordChange={({ target }) => setPassword(target.value)}
-            handleSubmit={handleLogin}
+            handleLogin={handleLogin}
           />
           <button onClick={() => setLoginVisible(false)}>cancel</button>
         </div>
@@ -83,27 +85,31 @@ const App = () => {
     );
   };
 
-  const blogForm = () => (
-    <form onSubmit={addBlog}>
+  const blogForm = () => {
+    const hideWhenVisible = { display: createVisible ? "none" : "" };
+    const showWhenVisible = { display: createVisible ? "" : "none" };
+    return (
       <div>
-        Title:
-        <input value={title} onChange={e => setTitle(e.target.value)} />
+        <div style={hideWhenVisible}>
+          <button onClick={() => setCreateVibisle(true)}>new blog</button>
+        </div>
+        <div style={showWhenVisible}>
+          <CreateBlog
+            title={title}
+            author={author}
+            url={url}
+            likes={likes}
+            handleTitleChange={({ target }) => setTitle(target.value)}
+            handleAuthorChange={({ target }) => setAuthor(target.value)}
+            handleUrlChange={({ target }) => setUrl(target.value)}
+            handleLikesChange={({ target }) => setLikes(target.value)}
+            handleSubmit={addBlog}
+          />
+          <button onClick={() => setCreateVibisle(false)}>cancel</button>
+        </div>
       </div>
-      <div>
-        Author:
-        <input value={author} onChange={e => setAuthor(e.target.value)} />
-      </div>
-      <div>
-        Url:
-        <input value={url} onChange={e => setUrl(e.target.value)} />
-      </div>
-      <div>
-        Likes:
-        <input value={likes} onChange={e => setLikes(e.target.value)} />
-      </div>
-      <button type="submit">create</button>
-    </form>
-  );
+    );
+  };
 
   const addBlog = e => {
     e.preventDefault();
