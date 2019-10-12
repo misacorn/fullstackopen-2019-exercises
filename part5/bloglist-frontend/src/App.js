@@ -8,6 +8,11 @@ import blogService from "./services/blogs";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
+  const [title, setTitle] = useState([]);
+  const [author, setAuthor] = useState([]);
+  const [url, setUrl] = useState([]);
+  const [likes, setLikes] = useState([]);
+  const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -57,7 +62,7 @@ const App = () => {
       <h2>Log in to application</h2>
       <form onSubmit={handleLogin}>
         <div>
-          username
+          Username: {""}
           <input
             type="text"
             value={username}
@@ -66,7 +71,7 @@ const App = () => {
           />
         </div>
         <div>
-          password
+          Password: {""}
           <input
             type="password"
             value={password}
@@ -79,6 +84,49 @@ const App = () => {
     </div>
   );
 
+  const blogForm = () => (
+    <form onSubmit={addBlog}>
+      <div>
+        Title:
+        <input value={title} onChange={e => setTitle(e.target.value)} />
+      </div>
+      <div>
+        Author:
+        <input value={author} onChange={e => setAuthor(e.target.value)} />
+      </div>
+      <div>
+        Url:
+        <input value={url} onChange={e => setUrl(e.target.value)} />
+      </div>
+      <div>
+        Likes:
+        <input value={likes} onChange={e => setLikes(e.target.value)} />
+      </div>
+      <button type="submit">create</button>
+    </form>
+  );
+
+  const addBlog = e => {
+    e.preventDefault();
+    const blogObject = {
+      title,
+      author,
+      url,
+      likes
+    };
+    blogService.create(blogObject).then(data => {
+      setBlogs(blogs.concat(data));
+      setTitle("");
+      setAuthor("");
+      setUrl("");
+      setLikes("");
+      setSuccessMessage(`Added a new blog!`);
+      setTimeout(() => {
+        setSuccessMessage(null);
+      }, 5000);
+    });
+  };
+
   const logout = () => {
     window.localStorage.removeItem("loggedBlogappUser");
     setUser(null);
@@ -87,7 +135,11 @@ const App = () => {
 
   return (
     <div>
-      {errorMessage && <Notification message={errorMessage} />}
+      {errorMessage ? (
+        <Notification message={errorMessage} />
+      ) : successMessage ? (
+        <Notification message={successMessage} />
+      ) : null}
       {user === null ? (
         loginForm()
       ) : (
@@ -97,6 +149,8 @@ const App = () => {
             {user.name} logged in {""}
             <button onClick={logout}>logout</button>
           </div>
+          <h2>Create a new blog</h2>
+          {blogForm()}
           <ul>
             {blogs.map(blog =>
               blog.user.name === user.name ? (
