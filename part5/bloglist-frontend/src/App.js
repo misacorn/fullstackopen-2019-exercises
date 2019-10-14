@@ -21,8 +21,6 @@ const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
-  const [loginVisible, setLoginVisible] = useState(false);
-  // const [createVisible, setCreateVibisle] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,55 +61,6 @@ const App = () => {
     }
   };
 
-  const loginForm = () => {
-    const hideWhenVisible = { display: loginVisible ? "none" : "" };
-    const showWhenVisible = { display: loginVisible ? "" : "none" };
-
-    return (
-      <div>
-        <div style={hideWhenVisible}>
-          <button onClick={() => setLoginVisible(true)}>log in</button>
-        </div>
-        <div style={showWhenVisible}>
-          <Login
-            username={username}
-            password={password}
-            handleUsernameChange={({ target }) => setUsername(target.value)}
-            handlePasswordChange={({ target }) => setPassword(target.value)}
-            handleLogin={handleLogin}
-          />
-          <button onClick={() => setLoginVisible(false)}>cancel</button>
-        </div>
-      </div>
-    );
-  };
-
-  // const blogForm = () => {
-  //   const hideWhenVisible = { display: createVisible ? "none" : "" };
-  //   const showWhenVisible = { display: createVisible ? "" : "none" };
-  //   return (
-  //     <div>
-  //       <div style={hideWhenVisible}>
-  //         <button onClick={() => setCreateVibisle(true)}>new blog</button>
-  //       </div>
-  //       <div style={showWhenVisible}>
-  //         <CreateBlog
-  //           title={title}
-  //           author={author}
-  //           url={url}
-  //           likes={likes}
-  //           handleTitleChange={({ target }) => setTitle(target.value)}
-  //           handleAuthorChange={({ target }) => setAuthor(target.value)}
-  //           handleUrlChange={({ target }) => setUrl(target.value)}
-  //           handleLikesChange={({ target }) => setLikes(target.value)}
-  //           handleSubmit={addBlog}
-  //         />
-  //         <button onClick={() => setCreateVibisle(false)}>cancel</button>
-  //       </div>
-  //     </div>
-  //   );
-  // };
-
   const addBlog = e => {
     e.preventDefault();
     const blogObject = {
@@ -150,7 +99,15 @@ const App = () => {
       {user === null ? (
         <div>
           <h2>Blogs</h2>
-          {loginForm()}
+          <Togglable buttonLabel="login">
+            <Login
+              username={username}
+              password={password}
+              handleUsernameChange={({ target }) => setUsername(target.value)}
+              handlePasswordChange={({ target }) => setPassword(target.value)}
+              handleLogin={handleLogin}
+            />
+          </Togglable>
         </div>
       ) : (
         <div>
