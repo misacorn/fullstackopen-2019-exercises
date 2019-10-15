@@ -123,11 +123,13 @@ const App = () => {
     console.log(window.localStorage);
   };
 
+  const blogRowRef = React.createRef();
+
   const rows = () =>
     blogs.map(blog =>
       blog.user.name === user.name ? (
-        <TogglableBlog title={blog.title}>
-          <Blog key={blog.id} blog={blog} user={user}/>
+        <TogglableBlog title={blog.title} ref={blogRowRef}>
+          <Blog key={blog.id} blog={blog} user={user} />
         </TogglableBlog>
       ) : null
     );

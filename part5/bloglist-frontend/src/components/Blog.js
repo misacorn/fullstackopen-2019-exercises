@@ -9,7 +9,6 @@ const Blog = ({ blog, user }) => {
   };
   return (
     <div style={blogStyle}>
-      {/* <p>{blog.title}</p> */}
       <div>{blog.author}</div>
       <div>{blog.url}</div>
       <div>
