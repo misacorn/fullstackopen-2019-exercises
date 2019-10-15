@@ -5,6 +5,7 @@ import Notification from "./components/Notification";
 import Login from "./components/Login";
 import CreateBlog from "./components/CreateBlog";
 import Togglable from "./components/Togglable";
+import TogglableBlog from "./components/TogglableBlog";
 
 import loginService from "./services/login";
 import blogService from "./services/blogs";
@@ -122,6 +123,15 @@ const App = () => {
     console.log(window.localStorage);
   };
 
+  const rows = () =>
+    blogs.map(blog =>
+      blog.user.name === user.name ? (
+        <TogglableBlog title={blog.title}>
+          <Blog key={blog.id} blog={blog} />
+        </TogglableBlog>
+      ) : null
+    );
+
   return (
     <div>
       {successMessage ? (
@@ -143,13 +153,7 @@ const App = () => {
           </div>
           <h2>Create a new blog</h2>
           {blogForm()}
-          <ul>
-            {blogs.map(blog =>
-              blog.user.name === user.name ? (
-                <Blog key={blog.id} blog={blog} />
-              ) : null
-            )}
-          </ul>
+          {rows()}
         </div>
       )}
     </div>
