@@ -61,8 +61,41 @@ const App = () => {
     }
   };
 
+  const loginFormRef = React.createRef();
+
+  const loginForm = () => (
+    <Togglable buttonLabel="login" ref={loginFormRef}>
+      <Login
+        username={username}
+        password={password}
+        handleUsernameChange={({ target }) => setUsername(target.value)}
+        handlePasswordChange={({ target }) => setPassword(target.value)}
+        handleLogin={handleLogin}
+      />
+    </Togglable>
+  );
+
+  const blogFormRef = React.createRef();
+
+  const blogForm = () => (
+    <Togglable buttonLabel="new blog" ref={blogFormRef}>
+      <CreateBlog
+        title={title}
+        author={author}
+        url={url}
+        likes={likes}
+        handleTitleChange={({ target }) => setTitle(target.value)}
+        handleAuthorChange={({ target }) => setAuthor(target.value)}
+        handleUrlChange={({ target }) => setUrl(target.value)}
+        handleLikesChange={({ target }) => setLikes(target.value)}
+        handleSubmit={addBlog}
+      />
+    </Togglable>
+  );
+
   const addBlog = e => {
     e.preventDefault();
+    blogFormRef.current.toggleVisibility();
     const blogObject = {
       title,
       author,
@@ -99,15 +132,7 @@ const App = () => {
       {user === null ? (
         <div>
           <h2>Blogs</h2>
-          <Togglable buttonLabel="login">
-            <Login
-              username={username}
-              password={password}
-              handleUsernameChange={({ target }) => setUsername(target.value)}
-              handlePasswordChange={({ target }) => setPassword(target.value)}
-              handleLogin={handleLogin}
-            />
-          </Togglable>
+          {loginForm()}
         </div>
       ) : (
         <div>
@@ -117,19 +142,7 @@ const App = () => {
             <button onClick={logout}>logout</button>
           </div>
           <h2>Create a new blog</h2>
-          <Togglable buttonLabel="new blog">
-            <CreateBlog
-              title={title}
-              author={author}
-              url={url}
-              likes={likes}
-              handleTitleChange={({ target }) => setTitle(target.value)}
-              handleAuthorChange={({ target }) => setAuthor(target.value)}
-              handleUrlChange={({ target }) => setUrl(target.value)}
-              handleLikesChange={({ target }) => setLikes(target.value)}
-              handleSubmit={addBlog}
-            />
-          </Togglable>
+          {blogForm()}
           <ul>
             {blogs.map(blog =>
               blog.user.name === user.name ? (
