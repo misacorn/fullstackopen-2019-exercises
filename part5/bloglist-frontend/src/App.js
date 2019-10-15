@@ -127,7 +127,7 @@ const App = () => {
     blogs.map(blog =>
       blog.user.name === user.name ? (
         <TogglableBlog title={blog.title}>
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blog={blog} user={user}/>
         </TogglableBlog>
       ) : null
     );
