@@ -1,5 +1,5 @@
 import React from "react";
-const Blog = ({ blog, user }) => {
+const Blog = ({ blog, user, increaseLikes }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -13,7 +13,7 @@ const Blog = ({ blog, user }) => {
       <div>{blog.url}</div>
       <div>
         {blog.likes} likes
-        <button>like</button>
+        <button onClick={increaseLikes}>like</button>
       </div>
       <div>Added by {user.name}</div>
     </div>

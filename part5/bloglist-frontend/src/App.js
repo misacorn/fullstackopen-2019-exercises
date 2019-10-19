@@ -123,13 +123,24 @@ const App = () => {
     console.log(window.localStorage);
   };
 
+  const increaseLikes = async blog => {
+    const changedBlog = { ...blog, likes: blog.likes + 1 };
+    await blogService.update(blog.id, changedBlog);
+    setBlogs(blogs.map(b => (b.id !== changedBlog.id ? b : changedBlog)));
+  };
+
   const blogRowRef = React.createRef();
 
   const rows = () =>
     blogs.map(blog =>
       blog.user.name === user.name ? (
         <TogglableBlog title={blog.title} ref={blogRowRef}>
-          <Blog key={blog.id} blog={blog} user={user} />
+          <Blog
+            key={blog.id}
+            blog={blog}
+            user={user}
+            increaseLikes={() => increaseLikes(blog)}
+          />
         </TogglableBlog>
       ) : null
     );
