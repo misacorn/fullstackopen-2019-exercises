@@ -26,7 +26,8 @@ const App = () => {
   useEffect(() => {
     const fetchData = async () => {
       const result = await blogService.getAll();
-      setBlogs(result);
+      const sortedResult = result.sort((a, b) => b.likes - a.likes)
+      setBlogs(sortedResult);
     };
     fetchData();
   }, []);
@@ -144,7 +145,6 @@ const App = () => {
         </TogglableBlog>
       ) : null
     );
-
   return (
     <div>
       {successMessage ? (
