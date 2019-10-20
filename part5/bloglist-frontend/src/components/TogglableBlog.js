@@ -1,5 +1,5 @@
 import React, { useState, useImperativeHandle } from "react";
-import PropTypes from "prop-types";
+import propTypes from "prop-types";
 
 const TogglableBlog = React.forwardRef((props, ref) => {
   const [visible, setVisible] = useState(false);
@@ -42,8 +42,8 @@ const TogglableBlog = React.forwardRef((props, ref) => {
   );
 });
 
-TogglableBlog.PropTypes = {
-  title: PropTypes.string.isRequired
+TogglableBlog.propTypes = {
+  title: propTypes.string.isRequired
 };
 
 export default TogglableBlog;
