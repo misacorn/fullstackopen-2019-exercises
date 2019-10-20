@@ -1,4 +1,7 @@
 import React, { useState, useImperativeHandle } from "react";
+import PropTypes from "prop-types";
+
+import Togglable from "./Togglable";
 
 const TogglableBlog = React.forwardRef((props, ref) => {
   const [visible, setVisible] = useState(false);
@@ -40,5 +43,9 @@ const TogglableBlog = React.forwardRef((props, ref) => {
     </div>
   );
 });
+
+TogglableBlog.PropTypes = {
+  title: PropTypes.string.isRequired
+};
 
 export default TogglableBlog;
