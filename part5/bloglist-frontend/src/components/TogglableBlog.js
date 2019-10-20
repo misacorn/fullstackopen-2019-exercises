@@ -1,8 +1,6 @@
 import React, { useState, useImperativeHandle } from "react";
 import PropTypes from "prop-types";
 
-import Togglable from "./Togglable";
-
 const TogglableBlog = React.forwardRef((props, ref) => {
   const [visible, setVisible] = useState(false);
 
