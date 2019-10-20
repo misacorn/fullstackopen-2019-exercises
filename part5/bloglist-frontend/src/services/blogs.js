@@ -25,8 +25,11 @@ const update = (id, newObject) => {
   return request.then(response => response.data);
 };
 
-const deletion = id => {
-  const request = axios.delete(`${baseUrl}/${id}`);
+const deletion = blog => {
+  const config = {
+    headers: { Authorization: token }
+  };
+  const request = axios.delete(`${baseUrl}/${blog.id}`, config, blog);
   return request.then(response => response.data);
 };
 

@@ -26,7 +26,7 @@ const App = () => {
   useEffect(() => {
     const fetchData = async () => {
       const result = await blogService.getAll();
-      const sortedResult = result.sort((a, b) => b.likes - a.likes)
+      const sortedResult = result.sort((a, b) => b.likes - a.likes);
       setBlogs(sortedResult);
     };
     fetchData();
@@ -130,6 +130,14 @@ const App = () => {
     setBlogs(blogs.map(b => (b.id !== changedBlog.id ? b : changedBlog)));
   };
 
+  const removeBlog = async blog => {
+    if (window.confirm(`Delete ${blog.title}? by ${blog.author}`)) {
+      const newBlogs = blogs.filter(b => b.id !== blog.id);
+      await blogService.deletion(blog);
+      setBlogs(newBlogs);
+    }
+  };
+
   const blogRowRef = React.createRef();
 
   const rows = () =>
@@ -141,6 +149,7 @@ const App = () => {
             blog={blog}
             user={user}
             increaseLikes={() => increaseLikes(blog)}
+            removeBlog={() => removeBlog(blog)}
           />
         </TogglableBlog>
       ) : null
