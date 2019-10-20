@@ -54,12 +54,16 @@ const App = () => {
       setUser(user);
       setUsername("");
       setPassword("");
+      setSuccessMessage("Login succeeded!");
+      setTimeout(() => {
+        setSuccessMessage(null);
+      }, 3000);
     } catch (exception) {
       setErrorMessage(exception.response.data.error);
       setHasError(true);
       setTimeout(() => {
         setErrorMessage(null);
-      }, 5000);
+      }, 3000);
     }
   };
 
@@ -114,14 +118,17 @@ const App = () => {
       setHasError(false);
       setTimeout(() => {
         setSuccessMessage(null);
-      }, 5000);
+      }, 3000);
     });
   };
 
   const logout = () => {
     window.localStorage.removeItem("loggedBlogappUser");
     setUser(null);
-    console.log(window.localStorage);
+    setSuccessMessage("Logout succeed!");
+    setTimeout(() => {
+      setSuccessMessage(null);
+    }, 3000);
   };
 
   const increaseLikes = async blog => {
