@@ -16,5 +16,5 @@ test("renders content", () => {
 
   const component = render(<Blog blog={blog} />);
 
-  expect(component.container).toHaveTextContent("BBB");
+  expect(component.container).toHaveTextContent("CCC");
 });

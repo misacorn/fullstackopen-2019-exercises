@@ -29,10 +29,10 @@ const TogglableBlog = React.forwardRef((props, ref) => {
     <div>
       <div style={hideWhenVisible}>
         <p onClick={toggleVisibility} style={blogStyle}>
-          {props.title}
+          {props.title} - {props.author}
         </p>
       </div>
-      <div style={showWhenVisible}>
+      <div style={showWhenVisible} className="togglableContent">
         <p onClick={toggleVisibility} style={blogStyle}>
           {props.title}
         </p>
@@ -43,7 +43,8 @@ const TogglableBlog = React.forwardRef((props, ref) => {
 });
 
 TogglableBlog.propTypes = {
-  title: propTypes.string.isRequired
+  title: propTypes.string.isRequired,
+  author: propTypes.string.isRequired
 };
 
 export default TogglableBlog;

@@ -150,7 +150,12 @@ const App = () => {
   const rows = () =>
     blogs.map(blog =>
       blog.user.name === user.name ? (
-        <TogglableBlog key={blog.id} title={blog.title} ref={blogRowRef}>
+        <TogglableBlog
+          key={blog.id}
+          title={blog.title}
+          author={blog.author}
+          ref={blogRowRef}
+        >
           <Blog
             key={blog.id}
             blog={blog}
