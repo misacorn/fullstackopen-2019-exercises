@@ -23,6 +23,6 @@ describe("<TogglableBlog />", () => {
     fireEvent.click(button);
     const div = component.container.querySelector(".togglableContent");
     expect(div).not.toHaveStyle("display: none");
-    component.debug();
+    // component.debug();
   });
 });
