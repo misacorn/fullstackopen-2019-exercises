@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import { useField } from "./hooks";
+
 import Blog from "./components/Blog";
 import Notification from "./components/Notification";
 import Login from "./components/Login";
@@ -11,6 +13,9 @@ import loginService from "./services/login";
 import blogService from "./services/blogs";
 
 const App = () => {
+  const username = useField("text");
+  const password = useField("text");
+
   const [blogs, setBlogs] = useState([]);
   const [title, setTitle] = useState([]);
   const [author, setAuthor] = useState([]);
@@ -18,16 +23,14 @@ const App = () => {
   const [likes, setLikes] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [hasError, setHasError] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [hasError, setHasError] = useState(false);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       const result = await blogService.getAll();
-      // const sortedResult = result.sort((a, b) => b.likes - a.likes);
-      setBlogs(result);
+      const sortedResult = result.sort((a, b) => b.likes - a.likes);
+      setBlogs(sortedResult);
     };
     fetchData();
   }, []);
@@ -46,14 +49,12 @@ const App = () => {
     try {
       window.localStorage.removeItem("loggedBlogappUser");
       const user = await loginService.login({
-        username,
-        password
+        username: username.value,
+        password: password.value
       });
       window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
       blogService.setToken(user.token);
       setUser(user);
-      setUsername("");
-      setPassword("");
       setSuccessMessage("Login succeeded!");
       setTimeout(() => {
         setSuccessMessage(null);
@@ -71,13 +72,7 @@ const App = () => {
 
   const loginForm = () => (
     <Togglable buttonLabel="login" ref={loginFormRef}>
-      <Login
-        username={username}
-        password={password}
-        handleUsernameChange={({ target }) => setUsername(target.value)}
-        handlePasswordChange={({ target }) => setPassword(target.value)}
-        onSubmit={handleLogin}
-      />
+      <Login username={username} password={password} onSubmit={handleLogin} />
     </Togglable>
   );
 
