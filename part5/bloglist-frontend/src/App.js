@@ -13,18 +13,19 @@ import loginService from "./services/login";
 import blogService from "./services/blogs";
 
 const App = () => {
+  const [user, setUser] = useState(null);
   const username = useField("text");
   const password = useField("text");
 
   const [blogs, setBlogs] = useState([]);
-  const [title, setTitle] = useState([]);
-  const [author, setAuthor] = useState([]);
-  const [url, setUrl] = useState([]);
-  const [likes, setLikes] = useState([]);
+  const title = useField("text");
+  const author = useField("text");
+  const url = useField("text");
+  const likes = useField("text");
+
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [hasError, setHasError] = useState(false);
-  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,6 +56,8 @@ const App = () => {
       window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
       blogService.setToken(user.token);
       setUser(user);
+      username.reset();
+      password.reset();
       setSuccessMessage("Login succeeded!");
       setTimeout(() => {
         setSuccessMessage(null);
@@ -85,10 +88,6 @@ const App = () => {
         author={author}
         url={url}
         likes={likes}
-        handleTitleChange={({ target }) => setTitle(target.value)}
-        handleAuthorChange={({ target }) => setAuthor(target.value)}
-        handleUrlChange={({ target }) => setUrl(target.value)}
-        handleLikesChange={({ target }) => setLikes(target.value)}
         handleSubmit={addBlog}
       />
     </Togglable>
@@ -98,18 +97,18 @@ const App = () => {
     e.preventDefault();
     blogFormRef.current.toggleVisibility();
     const blogObject = {
-      title,
-      author,
-      url,
-      likes
+      title: title.value,
+      author: author.value,
+      url: url.value,
+      likes: likes.value
     };
     blogService.create(blogObject).then(data => {
       setBlogs(blogs.concat(data));
-      setTitle("");
-      setAuthor("");
-      setUrl("");
-      setLikes("");
-      setSuccessMessage(`Added a new blog: ${title} by ${author}`);
+      title.reset();
+      author.reset();
+      url.reset();
+      likes.reset();
+      setSuccessMessage(`Added a new blog: ${title.value} by ${author.value}`);
       setHasError(false);
       setTimeout(() => {
         setSuccessMessage(null);

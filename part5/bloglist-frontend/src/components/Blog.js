@@ -1,4 +1,6 @@
 import React from "react";
+import propTypes from "prop-types";
+
 const Blog = ({ blog, increaseLikes, removeBlog }) => {
   const blogStyle = {
     paddingTop: 10,
@@ -19,6 +21,12 @@ const Blog = ({ blog, increaseLikes, removeBlog }) => {
       <button onClick={removeBlog}>remove</button>
     </div>
   );
+};
+
+Blog.propTypes = {
+  blog: propTypes.object.isRequired,
+  increaseLikes: propTypes.func.isRequired,
+  removeBlog: propTypes.func.isRequired
 };
 
 export default Blog;

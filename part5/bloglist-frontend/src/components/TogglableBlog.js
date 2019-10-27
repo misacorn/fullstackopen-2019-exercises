@@ -34,7 +34,7 @@ const TogglableBlog = React.forwardRef((props, ref) => {
       </div>
       <div style={showWhenVisible} className="togglableContent">
         <p onClick={toggleVisibility} style={blogStyle}>
-          {props.title}
+          {props.title} - {props.author}
         </p>
         {props.children}
       </div>
