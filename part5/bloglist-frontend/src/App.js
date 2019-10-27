@@ -26,15 +26,11 @@ const App = () => {
   const successMessage = useMessage("");
   const errorMessage = useMessage("");
   const hasError = useMessage("");
-  // const [successMessage, setSuccessMessage] = useState("");
-  // const [errorMessage, setErrorMessage] = useState("");
-  // const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       const result = await blogService.getAll();
-      const sortedResult = result.sort((a, b) => b.likes - a.likes);
-      setBlogs(sortedResult);
+      setBlogs(result);
     };
     fetchData();
   }, []);
@@ -148,23 +144,25 @@ const App = () => {
   const blogRowRef = React.createRef();
 
   const rows = () =>
-    blogs.map(blog =>
-      blog.user.name === user.name ? (
-        <TogglableBlog
-          key={blog.id}
-          title={blog.title}
-          author={blog.author}
-          ref={blogRowRef}
-        >
-          <Blog
+    blogs
+      .sort((b1, b2) => b2.likes - b1.likes)
+      .map(blog =>
+        blog.user.name === user.name ? (
+          <TogglableBlog
             key={blog.id}
-            blog={blog}
-            increaseLikes={() => increaseLikes(blog)}
-            removeBlog={() => removeBlog(blog)}
-          />
-        </TogglableBlog>
-      ) : null
-    );
+            title={blog.title}
+            author={blog.author}
+            ref={blogRowRef}
+          >
+            <Blog
+              key={blog.id}
+              blog={blog}
+              increaseLikes={() => increaseLikes(blog)}
+              removeBlog={() => removeBlog(blog)}
+            />
+          </TogglableBlog>
+        ) : null
+      );
   return (
     <div>
       {successMessage.value ? (

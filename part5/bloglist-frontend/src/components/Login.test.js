@@ -3,21 +3,21 @@ import { render, fireEvent } from "@testing-library/react";
 import Login from "./Login";
 
 const Wrapper = props => {
-  const handleUsernameChange = event => {
-    props.state.username = event.target.value;
-  };
+  // const handleUsernameChange = event => {
+  //   props.state.username = event.target.value;
+  // };
 
-  const handlePasswordChange = event => {
-    props.state.password = event.target.value;
-  };
+  // const handlePasswordChange = event => {
+  //   props.state.password = event.target.value;
+  // };
 
   return (
     <Login
       username={props.state.username}
       password={props.state.password}
       onSubmit={props.onSubmit}
-      handleUsernameChange={handleUsernameChange}
-      handlePasswordChange={handlePasswordChange}
+      // handleUsernameChange={handleUsernameChange}
+      // handlePasswordChange={handlePasswordChange}
     />
   );
 };
@@ -25,8 +25,8 @@ const Wrapper = props => {
 test("<Login /> updates parent state and calls onSubmit", () => {
   const onSubmit = jest.fn();
   const state = {
-    username: "",
-    password: ""
+    username: { value: "" },
+    password: { value: "" }
   };
 
   const component = render(<Wrapper onSubmit={onSubmit} state={state} />);
@@ -44,6 +44,6 @@ test("<Login /> updates parent state and calls onSubmit", () => {
   fireEvent.submit(form);
 
   expect(onSubmit.mock.calls.length).toBe(1);
-  expect(state.username).toBe("abc");
-  expect(state.password).toBe("123");
+  expect(state.username.value).toBe("abc");
+  expect(state.password.value).toBe("123");
 });

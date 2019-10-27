@@ -4,8 +4,13 @@ jest.mock("./services/blogs");
 import App from "./App";
 
 describe("<App />", () => {
+  let component;
+
+  beforeEach(() => {
+    component = render(<App />);
+  });
+
   test("renders all blogs it gets from backend", async () => {
-    const component = render(<App />);
     component.rerender(<App />);
 
     await waitForElement(() => component.container.querySelector(".blog"));
@@ -14,14 +19,31 @@ describe("<App />", () => {
     expect(blogs.length).toBe(5);
   });
 
-  test("if no user logged, blogs are not rendered", async () => {
-    const component = render(<App />);
+  test("1st test: if no user logged, blogs are not rendered", async () => {
     component.rerender(<App />);
 
     await waitForElement(() => component.getByText("login"));
 
-    // expectations here
+    expect(component.container).toHaveTextContent("login");
+    expect(component.container).toHaveTextContent("username");
+    expect(component.container).toHaveTextContent("password");
+    expect(component.container).not.toHaveTextContent("111");
+    expect(component.container).not.toHaveTextContent("222");
+  });
 
-    
+  test("2nd test: if no user logged, blogs are not rendered", async () => {
+    const user = {
+      username: "tester",
+      token: "1231231214",
+      name: "Teuvo Testaaja"
+    };
+
+    localStorage.setItem("loggedBlogAppUser", JSON.stringify(user));
+
+    component.rerender(<App />);
+
+    await waitForElement(() => component.getByText("create"));
+    expect(component.container).not.toHaveTextContent("username");
+    expect(component.container).not.toHaveTextContent("password");
   });
 });
