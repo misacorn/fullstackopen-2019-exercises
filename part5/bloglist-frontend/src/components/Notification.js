@@ -13,8 +13,8 @@ const NotificationWrapper = styled.div`
 
 const Notification = ({ message, hasError }) => {
   return (
-    <NotificationWrapper hasError={hasError}>
-      <div className="message">{message}</div>
+    <NotificationWrapper hasError={hasError.value}>
+      <div className="message">{message.value}</div>
     </NotificationWrapper>
   );
 };

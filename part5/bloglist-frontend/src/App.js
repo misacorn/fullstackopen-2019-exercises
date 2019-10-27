@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { useField } from "./hooks";
+import { useField, useMessage } from "./hooks";
 
 import Blog from "./components/Blog";
 import Notification from "./components/Notification";
@@ -23,9 +23,12 @@ const App = () => {
   const url = useField("text");
   const likes = useField("text");
 
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [hasError, setHasError] = useState(false);
+  const successMessage = useMessage("");
+  const errorMessage = useMessage("");
+  const hasError = useMessage("");
+  // const [successMessage, setSuccessMessage] = useState("");
+  // const [errorMessage, setErrorMessage] = useState("");
+  // const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,15 +61,16 @@ const App = () => {
       setUser(user);
       username.reset();
       password.reset();
-      setSuccessMessage("Login succeeded!");
+      hasError.onChange(false);
+      successMessage.onChange("Login succeeded!");
       setTimeout(() => {
-        setSuccessMessage(null);
+        successMessage.onChange(null);
       }, 3000);
     } catch (exception) {
-      setErrorMessage(exception.response.data.error);
-      setHasError(true);
+      hasError.onChange(true);
+      errorMessage.onChange(exception.response.data.error);
       setTimeout(() => {
-        setErrorMessage(null);
+        errorMessage.onChange(null);
       }, 3000);
     }
   };
@@ -108,10 +112,11 @@ const App = () => {
       author.reset();
       url.reset();
       likes.reset();
-      setSuccessMessage(`Added a new blog: ${title.value} by ${author.value}`);
-      setHasError(false);
+      successMessage.onChange(
+        `Added a new blog: ${title.value} by ${author.value}`
+      );
       setTimeout(() => {
-        setSuccessMessage(null);
+        successMessage.onChange(null);
       }, 3000);
     });
   };
@@ -119,9 +124,9 @@ const App = () => {
   const logout = () => {
     window.localStorage.removeItem("loggedBlogappUser");
     setUser(null);
-    setSuccessMessage("Logout succeed!");
+    successMessage.onChange("Logout succeed!");
     setTimeout(() => {
-      setSuccessMessage(null);
+      successMessage.onChange(null);
     }, 3000);
   };
 
@@ -136,6 +141,7 @@ const App = () => {
       const newBlogs = blogs.filter(b => b.id !== blog.id);
       await blogService.deletion(blog);
       setBlogs(newBlogs);
+      successMessage.onChange(`Deleted ${blog.title}`);
     }
   };
 
@@ -161,9 +167,9 @@ const App = () => {
     );
   return (
     <div>
-      {successMessage ? (
+      {successMessage.value ? (
         <Notification message={successMessage} hasError={hasError} />
-      ) : errorMessage ? (
+      ) : errorMessage.value ? (
         <Notification message={errorMessage} hasError={hasError} />
       ) : null}
       {user === null ? (

@@ -18,3 +18,16 @@ export const useField = type => {
     reset
   };
 };
+
+export const useMessage = () => {
+  const [value, setValue] = useState("");
+
+  const onChange = message => {
+    setValue(message);
+  };
+
+  return {
+    value,
+    onChange
+  };
+};
