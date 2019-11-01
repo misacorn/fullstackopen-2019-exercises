@@ -5,8 +5,6 @@ import { addVote } from "../reducers/anecdotesReducer";
 import { notiShow } from "../reducers/notiReducer";
 
 const AnecdoteList = props => {
-  const { anecdotes, filter } = props;
-
   const vote = anecdote => {
     props.addVote(anecdote.id);
     props.notiShow(`you voted '${anecdote.content}'`);
@@ -15,13 +13,9 @@ const AnecdoteList = props => {
     }, 5000);
   };
 
-  const filteredAnecdotes = filter
-    ? anecdotes.filter(a => a.content.toLowerCase().includes(filter))
-    : anecdotes;
-
   return (
     <>
-      {filteredAnecdotes
+      {props.anecdotesToShow
         .sort((a, b) => b.votes - a.votes)
         .map(anecdote => (
           <div key={anecdote.id}>
@@ -42,10 +36,15 @@ const AnecdoteList = props => {
   );
 };
 
+const filteredAnecdotes = ({ anecdotes, filter }) => {
+  return filter
+    ? anecdotes.filter(a => a.content.toLowerCase().includes(filter))
+    : anecdotes;
+};
+
 const mapStateToProps = state => {
   return {
-    anecdotes: state.anecdotes,
-    filter: state.filter
+    anecdotesToShow: filteredAnecdotes(state)
   };
 };
 

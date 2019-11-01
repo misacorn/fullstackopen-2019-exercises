@@ -23,8 +23,7 @@ const AnecdoteForm = props => {
   );
 };
 
-const mapDispatchToProps = {
-  addAnec
-};
-
-export default connect(null,mapDispatchToProps)(AnecdoteForm);
+export default connect(
+  null,
+  { addAnec }
+)(AnecdoteForm);

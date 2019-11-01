@@ -24,11 +24,7 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchtoProps = {
-  filterChange
-};
-
 export default connect(
   mapStateToProps,
-  mapDispatchtoProps
+  {filterChange}
 )(Filter);
