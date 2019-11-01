@@ -1,15 +1,20 @@
 import React from "react";
 import { addVote } from "../reducers/anecdoteReducer";
+import { notiShow } from "../reducers/notiReducer";
 
 const AnecdoteList = ({ store }) => {
   const anecdotes = store.getState().anecdote;
 
-  const vote = id => {
-    store.dispatch(addVote(id));
+  const vote = anecdote => {
+    store.dispatch(addVote(anecdote.id));
+    store.dispatch(notiShow(`you voted '${anecdote.content}'`));
+    setTimeout(() => {
+      store.dispatch(notiShow(null));
+    }, 5000);
   };
 
   return (
-    <div>
+    <>
       {anecdotes
         .sort((a, b) => b.votes - a.votes)
         .map(anecdote => (
@@ -17,11 +22,17 @@ const AnecdoteList = ({ store }) => {
             <div>{anecdote.content}</div>
             <div>
               has {anecdote.votes}
-              <button onClick={() => vote(anecdote.id)}>vote</button>
+              <button
+                onClick={() => {
+                  vote(anecdote);
+                }}
+              >
+                vote
+              </button>
             </div>
           </div>
         ))}
-    </div>
+    </>
   );
 };
 

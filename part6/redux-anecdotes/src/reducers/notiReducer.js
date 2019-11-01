@@ -1,4 +1,4 @@
-const notiReducer = (state = "Helu", action) => {
+const notiReducer = (state = null, action) => {
   switch (action.type) {
     case "SET_NOTI":
       return action.noti;
@@ -7,9 +7,9 @@ const notiReducer = (state = "Helu", action) => {
   }
 };
 
-export const notiChange = noti => {
+export const notiShow = noti => {
   return {
-    type: "SET_FILTER",
+    type: "SET_NOTI",
     noti
   };
 };
