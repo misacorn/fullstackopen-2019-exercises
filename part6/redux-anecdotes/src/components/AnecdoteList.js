@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+
 import { addVote } from "../reducers/anecdotesReducer";
 import { notiShow } from "../reducers/notiReducer";
 
@@ -10,7 +11,7 @@ const AnecdoteList = props => {
     props.addVote(anecdote.id);
     props.notiShow(`you voted '${anecdote.content}'`);
     setTimeout(() => {
-      props.store.dispatch(notiShow(null));
+      props.notiShow(null);
     }, 5000);
   };
 

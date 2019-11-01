@@ -1,10 +1,11 @@
 import React from "react";
+import { connect } from "react-redux";
+
 import { filterChange } from "../reducers/filterReducer";
 
-const Filter = ({ store }) => {
+const Filter = props => {
   const handleChange = event => {
-    // input-field value is in variable event.target.value
-    store.dispatch(filterChange(event.target.value.toLowerCase()));
+    props.filterChange(event.target.value.toLowerCase());
   };
   const style = {
     marginBottom: 10
@@ -17,4 +18,17 @@ const Filter = ({ store }) => {
   );
 };
 
-export default Filter;
+const mapStateToProps = state => {
+  return {
+    filter: state.filter
+  };
+};
+
+const mapDispatchtoProps = {
+  filterChange
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchtoProps
+)(Filter);
