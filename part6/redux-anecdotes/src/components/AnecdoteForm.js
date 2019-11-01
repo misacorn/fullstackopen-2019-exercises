@@ -1,5 +1,5 @@
 import React from "react";
-import { addAnec } from "../reducers/anecdoteReducer";
+import { addAnec } from "../reducers/anecdotesReducer";
 
 const AnecdoteForm = props => {
   const createNew = event => {

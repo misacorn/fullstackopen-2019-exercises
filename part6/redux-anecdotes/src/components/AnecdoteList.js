@@ -1,9 +1,9 @@
 import React from "react";
-import { addVote } from "../reducers/anecdoteReducer";
+import { addVote } from "../reducers/anecdotesReducer";
 import { notiShow } from "../reducers/notiReducer";
 
 const AnecdoteList = ({ store }) => {
-  const anecdotes = store.getState().anecdote;
+  const { anecdotes, filter } = store.getState();
 
   const vote = anecdote => {
     store.dispatch(addVote(anecdote.id));
@@ -13,9 +13,13 @@ const AnecdoteList = ({ store }) => {
     }, 5000);
   };
 
+  const filteredAnecdotes = filter
+    ? anecdotes.filter(a => a.content.toLowerCase().includes(filter))
+    : anecdotes;
+
   return (
     <>
-      {anecdotes
+      {filteredAnecdotes
         .sort((a, b) => b.votes - a.votes)
         .map(anecdote => (
           <div key={anecdote.id}>
