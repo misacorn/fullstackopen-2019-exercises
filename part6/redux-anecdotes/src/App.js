@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 
-import anecdoteService from "./services/anecdotes";
 import { initializeAnecdotes } from "./reducers/anecdotesReducer";
 import Notification from "./components/Notification";
 import Filter from "./components/Filter";
@@ -10,9 +9,7 @@ import AnecdoteList from "./components/AnecdoteList";
 
 const App = props => {
   useEffect(() => {
-    anecdoteService
-      .getAll()
-      .then(anecdotes => props.initializeAnecdotes(anecdotes));
+    props.initializeAnecdotes();
   }, [props]);
 
   return (
