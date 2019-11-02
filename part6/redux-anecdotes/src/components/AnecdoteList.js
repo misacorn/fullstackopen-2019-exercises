@@ -6,7 +6,7 @@ import { notiShow } from "../reducers/notiReducer";
 
 const AnecdoteList = props => {
   const vote = anecdote => {
-    props.addVote(anecdote.id);
+    props.addVote(anecdote);
     props.notiShow(`you voted '${anecdote.content}'`);
     setTimeout(() => {
       props.notiShow(null);
