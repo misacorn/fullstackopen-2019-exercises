@@ -21,7 +21,7 @@ const App = () => {
     }
   ]);
 
-  const [notification, setNotification] = useState("");
+  // const [notification, setNotification] = useState("");
 
   const addNew = anecdote => {
     anecdote.id = (Math.random() * 10000).toFixed(0);
@@ -30,21 +30,21 @@ const App = () => {
 
   const anecdoteById = id => anecdotes.find(a => a.id === id);
 
-  const vote = id => {
-    const anecdote = anecdoteById(id);
+  // const vote = id => {
+  //   const anecdote = anecdoteById(id);
 
-    const voted = {
-      ...anecdote,
-      votes: anecdote.votes + 1
-    };
+  //   const voted = {
+  //     ...anecdote,
+  //     votes: anecdote.votes + 1
+  //   };
 
-    setAnecdotes(anecdotes.map(a => (a.id === id ? voted : a)));
-  };
+  //   setAnecdotes(anecdotes.map(a => (a.id === id ? voted : a)));
+  // };
 
   return (
     <div>
       <h1>Software anecdotes</h1>
-      <Menu anecdotes={anecdotes} addNew={addNew}/>
+      <Menu anecdotes={anecdotes} addNew={addNew} anecdoteById={anecdoteById} />
       <Footer />
     </div>
   );

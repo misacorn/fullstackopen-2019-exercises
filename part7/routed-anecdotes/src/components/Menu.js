@@ -1,20 +1,16 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  Redirect,
-  withRouter
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import AnecdoteList from "./AnecdoteList";
 import About from "./About";
 import CreateNew from "./CreateNew";
+import Anecdote from "./Anecdote";
 
-const Menu = ({ anecdotes, addNew }) => {
+const Menu = ({ anecdotes, addNew, anecdoteById }) => {
   const padding = {
     paddingRight: 5
   };
+
   return (
     <Router>
       <div>
@@ -29,13 +25,25 @@ const Menu = ({ anecdotes, addNew }) => {
             about
           </Link>
         </div>
+        
         <Route
           exact
           path="/"
           render={() => <AnecdoteList anecdotes={anecdotes} />}
         />
-        <Route path="/create" render={() => <CreateNew addNew={addNew} />} />
-        <Route path="/about" render={() => <About />} />
+        <Route
+          exact
+          path="/create"
+          render={() => <CreateNew addNew={addNew} />}
+        />
+        <Route exact path="/about" render={() => <About />} />
+        <Route
+          exact
+          path="/anecdotes/:id"
+          render={({ match }) => (
+            <Anecdote anecdote={anecdoteById(match.params.id)} />
+          )}
+        />
       </div>
     </Router>
   );
