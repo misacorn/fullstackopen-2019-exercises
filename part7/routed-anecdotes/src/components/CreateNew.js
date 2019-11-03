@@ -1,22 +1,30 @@
 import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
 
-const CreateNew = props => {
+const CreateNew = ({ addNew, setNotification }) => {
   const [content, setContent] = useState("");
   const [author, setAuthor] = useState("");
   const [info, setInfo] = useState("");
+  const [redirectHome, setRedirect] = useState(false);
 
   const handleSubmit = e => {
     e.preventDefault();
-    props.addNew({
+    addNew({
       content,
       author,
       info,
       votes: 0
     });
+    setRedirect(true);
+    setNotification(`a new anecdote '${content}' created!`);
+    setTimeout(() => {
+      setNotification("");
+    }, 10000);
   };
 
   return (
     <div>
+      {redirectHome ? <Redirect to={"/"} /> : null}
       <h2>Create a new anecdote</h2>
       <form onSubmit={handleSubmit}>
         <div>

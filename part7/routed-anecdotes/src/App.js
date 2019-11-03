@@ -21,7 +21,7 @@ const App = () => {
     }
   ]);
 
-  // const [notification, setNotification] = useState("");
+  const [notification, setNotification] = useState("");
 
   const addNew = anecdote => {
     anecdote.id = (Math.random() * 10000).toFixed(0);
@@ -44,7 +44,13 @@ const App = () => {
   return (
     <div>
       <h1>Software anecdotes</h1>
-      <Menu anecdotes={anecdotes} addNew={addNew} anecdoteById={anecdoteById} />
+      <Menu
+        anecdotes={anecdotes}
+        addNew={addNew}
+        anecdoteById={anecdoteById}
+        notification={notification}
+        setNotification={setNotification}
+      />
       <Footer />
     </div>
   );

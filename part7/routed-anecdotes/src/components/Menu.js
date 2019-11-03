@@ -6,7 +6,13 @@ import About from "./About";
 import CreateNew from "./CreateNew";
 import Anecdote from "./Anecdote";
 
-const Menu = ({ anecdotes, addNew, anecdoteById }) => {
+const Menu = ({
+  anecdotes,
+  addNew,
+  anecdoteById,
+  notification,
+  setNotification
+}) => {
   const padding = {
     paddingRight: 5
   };
@@ -25,7 +31,9 @@ const Menu = ({ anecdotes, addNew, anecdoteById }) => {
             about
           </Link>
         </div>
-        
+
+        {notification ? <p>{notification}</p> : null}
+
         <Route
           exact
           path="/"
@@ -34,7 +42,9 @@ const Menu = ({ anecdotes, addNew, anecdoteById }) => {
         <Route
           exact
           path="/create"
-          render={() => <CreateNew addNew={addNew} />}
+          render={() => (
+            <CreateNew addNew={addNew} setNotification={setNotification} />
+          )}
         />
         <Route exact path="/about" render={() => <About />} />
         <Route
