@@ -39,13 +39,14 @@ export const addAnec = () => {
   };
 };
 
+//Solution
 export const addVote = anecdote => {
   return async dispatch => {
     const changedAnec = {
       ...anecdote,
       votes: anecdote.votes + 1
     };
-    const updatedAnec = await anecdoteService.update(anecdote.id, changedAnec);
+    const updatedAnec = await anecdoteService.update(changedAnec);
     dispatch({
       type: "VOTE",
       data: updatedAnec
