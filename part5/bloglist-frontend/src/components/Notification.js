@@ -19,4 +19,10 @@ const Notification = ({ message, hasError }) => {
   );
 };
 
+// const mapStateToProps = state => {
+//   return {
+//     noti: state.noti
+//   };
+// };
+
 export default Notification;

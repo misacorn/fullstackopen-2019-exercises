@@ -38,7 +38,7 @@ const CreateBlog = ({ handleSubmit, title, author, url, likes }) => {
 };
 
 CreateBlog.propTypes = {
-  handleSubmit: propTypes.func.isRequired,
+  // handleSubmit: propTypes.func.isRequired,
   title: propTypes.object.isRequired,
   author: propTypes.object.isRequired,
   url: propTypes.object.isRequired,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import { connect } from "react-redux";
 import { useField, useMessage } from "./hooks";
 
 import Blog from "./components/Blog";
@@ -9,15 +9,16 @@ import CreateBlog from "./components/CreateBlog";
 import Togglable from "./components/Togglable";
 import TogglableBlog from "./components/TogglableBlog";
 
+import { getAllBlogs } from "./reducers/blogReducer";
 import loginService from "./services/login";
 import blogService from "./services/blogs";
 
-const App = () => {
+const App = props => {
   const [user, setUser] = useState(null);
   const username = useField("text");
   const password = useField("text");
 
-  const [blogs, setBlogs] = useState([]);
+  // const [blogs, setBlogs] = useState([]);
   const title = useField("text");
   const author = useField("text");
   const url = useField("text");
@@ -27,13 +28,16 @@ const App = () => {
   const errorMessage = useMessage("");
   const hasError = useMessage("");
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const result = await blogService.getAll();
+  //     setBlogs(result);
+  //   };
+  //   fetchData();
+  // }, []);
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await blogService.getAll();
-      setBlogs(result);
-    };
-    fetchData();
-  }, []);
+    props.getAllBlogs();
+  }, [props]);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
@@ -88,34 +92,34 @@ const App = () => {
         author={author}
         url={url}
         likes={likes}
-        handleSubmit={addBlog}
+        // handleSubmit={addBlog}
       />
     </Togglable>
   );
 
-  const addBlog = e => {
-    e.preventDefault();
-    blogFormRef.current.toggleVisibility();
-    const blogObject = {
-      title: title.value,
-      author: author.value,
-      url: url.value,
-      likes: likes.value
-    };
-    blogService.create(blogObject).then(data => {
-      setBlogs(blogs.concat(data));
-      title.reset();
-      author.reset();
-      url.reset();
-      likes.reset();
-      successMessage.onChange(
-        `Added a new blog: ${title.value} by ${author.value}`
-      );
-      setTimeout(() => {
-        successMessage.onChange(null);
-      }, 3000);
-    });
-  };
+  // const addBlog = e => {
+  //   e.preventDefault();
+  //   blogFormRef.current.toggleVisibility();
+  //   const blogObject = {
+  //     title: title.value,
+  //     author: author.value,
+  //     url: url.value,
+  //     likes: likes.value
+  //   };
+  //   blogService.create(blogObject).then(data => {
+  //     setBlogs(blogs.concat(data));
+  //     title.reset();
+  //     author.reset();
+  //     url.reset();
+  //     likes.reset();
+  //     successMessage.onChange(
+  //       `Added a new blog: ${title.value} by ${author.value}`
+  //     );
+  //     setTimeout(() => {
+  //       successMessage.onChange(null);
+  //     }, 3000);
+  //   });
+  // };
 
   const logout = () => {
     window.localStorage.removeItem("loggedBlogappUser");
@@ -126,25 +130,25 @@ const App = () => {
     }, 3000);
   };
 
-  const increaseLikes = async blog => {
-    const changedBlog = { ...blog, likes: blog.likes + 1 };
-    await blogService.update(blog.id, changedBlog);
-    setBlogs(blogs.map(b => (b.id !== changedBlog.id ? b : changedBlog)));
-  };
+  // const increaseLikes = async blog => {
+  //   const changedBlog = { ...blog, likes: blog.likes + 1 };
+  //   await blogService.update(blog.id, changedBlog);
+  //   setBlogs(blogs.map(b => (b.id !== changedBlog.id ? b : changedBlog)));
+  // };
 
-  const removeBlog = async blog => {
-    if (window.confirm(`Delete ${blog.title}? by ${blog.author}`)) {
-      const newBlogs = blogs.filter(b => b.id !== blog.id);
-      await blogService.deletion(blog);
-      setBlogs(newBlogs);
-      successMessage.onChange(`Deleted ${blog.title}`);
-    }
-  };
+  // const removeBlog = async blog => {
+  //   if (window.confirm(`Delete ${blog.title}? by ${blog.author}`)) {
+  //     const newBlogs = blogs.filter(b => b.id !== blog.id);
+  //     await blogService.deletion(blog);
+  //     setBlogs(newBlogs);
+  //     successMessage.onChange(`Deleted ${blog.title}`);
+  //   }
+  // };
 
   const blogRowRef = React.createRef();
 
   const rows = () =>
-    blogs
+    props.blogs
       .sort((b1, b2) => b2.likes - b1.likes)
       .map(blog =>
         blog.user.name === user.name ? (
@@ -157,8 +161,8 @@ const App = () => {
             <Blog
               key={blog.id}
               blog={blog}
-              increaseLikes={() => increaseLikes(blog)}
-              removeBlog={() => removeBlog(blog)}
+              // increaseLikes={() => increaseLikes(blog)}
+              // removeBlog={() => removeBlog(blog)}
             />
           </TogglableBlog>
         ) : null
@@ -191,4 +195,13 @@ const App = () => {
   );
 };
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    blogs: state.blogs
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  { getAllBlogs }
+)(App);
