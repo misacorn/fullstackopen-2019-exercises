@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { useField, useMessage } from "./hooks";
+import { useField } from "./hooks";
 
 import Blog from "./components/Blog";
 import Notification from "./components/Notification";
@@ -10,6 +10,7 @@ import Togglable from "./components/Togglable";
 import TogglableBlog from "./components/TogglableBlog";
 
 import { getAllBlogs } from "./reducers/blogReducer";
+import { setNotification } from "./reducers/notiReducer";
 import loginService from "./services/login";
 import blogService from "./services/blogs";
 
@@ -18,23 +19,11 @@ const App = props => {
   const username = useField("text");
   const password = useField("text");
 
-  // const [blogs, setBlogs] = useState([]);
   const title = useField("text");
   const author = useField("text");
   const url = useField("text");
   const likes = useField("text");
 
-  const successMessage = useMessage("");
-  const errorMessage = useMessage("");
-  const hasError = useMessage("");
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const result = await blogService.getAll();
-  //     setBlogs(result);
-  //   };
-  //   fetchData();
-  // }, []);
   useEffect(() => {
     props.getAllBlogs();
   }, [props]);
@@ -61,17 +50,9 @@ const App = props => {
       setUser(user);
       username.reset();
       password.reset();
-      hasError.onChange(false);
-      successMessage.onChange("Login succeeded!");
-      setTimeout(() => {
-        successMessage.onChange(null);
-      }, 3000);
+      props.setNotification("Login succeeded!", 3000);
     } catch (exception) {
-      hasError.onChange(true);
-      errorMessage.onChange(exception.response.data.error);
-      setTimeout(() => {
-        errorMessage.onChange(null);
-      }, 3000);
+      props.setNotification(exception.response.data.error, 3000);
     }
   };
 
@@ -124,10 +105,10 @@ const App = props => {
   const logout = () => {
     window.localStorage.removeItem("loggedBlogappUser");
     setUser(null);
-    successMessage.onChange("Logout succeed!");
-    setTimeout(() => {
-      successMessage.onChange(null);
-    }, 3000);
+    // successMessage.onChange("Logout succeed!");
+    // setTimeout(() => {
+    //   successMessage.onChange(null);
+    // }, 3000);
   };
 
   // const increaseLikes = async blog => {
@@ -169,11 +150,7 @@ const App = props => {
       );
   return (
     <div>
-      {successMessage.value ? (
-        <Notification message={successMessage} hasError={hasError} />
-      ) : errorMessage.value ? (
-        <Notification message={errorMessage} hasError={hasError} />
-      ) : null}
+      <Notification />
       {user === null ? (
         <div>
           <h2>Blogs</h2>
@@ -201,7 +178,12 @@ const mapStateToProps = state => {
   };
 };
 
+const mapDispatchToProps = {
+  getAllBlogs,
+  setNotification
+};
+
 export default connect(
   mapStateToProps,
-  { getAllBlogs }
+  mapDispatchToProps
 )(App);
