@@ -9,7 +9,7 @@ import CreateBlog from "./components/CreateBlog";
 import Togglable from "./components/Togglable";
 import TogglableBlog from "./components/TogglableBlog";
 
-import { getAllBlogs } from "./reducers/blogReducer";
+import { getAllBlogs, addNewBlog } from "./reducers/blogReducer";
 import { setNotification } from "./reducers/notiReducer";
 import loginService from "./services/login";
 import blogService from "./services/blogs";
@@ -73,42 +73,36 @@ const App = props => {
         author={author}
         url={url}
         likes={likes}
-        // handleSubmit={addBlog}
+        handleSubmit={addBlog}
       />
     </Togglable>
   );
 
-  // const addBlog = e => {
-  //   e.preventDefault();
-  //   blogFormRef.current.toggleVisibility();
-  //   const blogObject = {
-  //     title: title.value,
-  //     author: author.value,
-  //     url: url.value,
-  //     likes: likes.value
-  //   };
-  //   blogService.create(blogObject).then(data => {
-  //     setBlogs(blogs.concat(data));
-  //     title.reset();
-  //     author.reset();
-  //     url.reset();
-  //     likes.reset();
-  //     successMessage.onChange(
-  //       `Added a new blog: ${title.value} by ${author.value}`
-  //     );
-  //     setTimeout(() => {
-  //       successMessage.onChange(null);
-  //     }, 3000);
-  //   });
-  // };
+  const addBlog = e => {
+    e.preventDefault();
+    blogFormRef.current.toggleVisibility();
+    const blogObject = {
+      title: title.value,
+      author: author.value,
+      url: url.value,
+      likes: likes.value
+    };
+    blogService.create(blogObject).then(data => {
+      props.addNewBlog(data);
+      // title.reset(); // setBlogs(blogs.concat(data));
+      // author.reset();
+      // url.reset();
+      // likes.reset();
+      props.setNotification(
+        `Added a new blog: ${title.value} by ${author.value}`
+      );
+    });
+  };
 
   const logout = () => {
     window.localStorage.removeItem("loggedBlogappUser");
     setUser(null);
-    // successMessage.onChange("Logout succeed!");
-    // setTimeout(() => {
-    //   successMessage.onChange(null);
-    // }, 3000);
+    props.setNotification("Logout succeed!");
   };
 
   // const increaseLikes = async blog => {
@@ -180,7 +174,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   getAllBlogs,
-  setNotification
+  setNotification,
+  addNewBlog
 };
 
 export default connect(
