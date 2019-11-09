@@ -19,19 +19,27 @@ import { setNotification } from "./reducers/notiReducer";
 import loginService from "./services/login";
 import blogService from "./services/blogs";
 
-const App = props => {
+const App = ({
+  blogs,
+  setNotification,
+  addLikes,
+  deleteBlog,
+  blogFormState,
+  getAllBlogs,
+  addNewBlog
+}) => {
   const [user, setUser] = useState(null);
   const username = useField("text");
   const password = useField("text");
 
-  const title = useField("text");
-  const author = useField("text");
-  const url = useField("text");
-  const likes = useField("text");
+  // const title = useField("text");
+  // const author = useField("text");
+  // const url = useField("text");
+  // const likes = useField("text");
 
   useEffect(() => {
-    props.getAllBlogs();
-  }, [props]);
+    getAllBlogs();
+  }, [getAllBlogs]);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
@@ -55,9 +63,9 @@ const App = props => {
       setUser(user);
       username.reset();
       password.reset();
-      props.setNotification("Login succeeded!", 3000);
+      setNotification("Login succeeded!", 3000);
     } catch (exception) {
-      props.setNotification(exception.response.data.error, 3000);
+      setNotification(exception.response.data.error, 3000);
     }
   };
 
@@ -71,55 +79,61 @@ const App = props => {
 
   const blogFormRef = React.createRef();
 
+  // const blogForm = () => (
+  //   <Togglable buttonLabel="new blog" ref={blogFormRef}>
+  //     <CreateBlog
+  //       title={title}
+  //       author={author}
+  //       url={url}
+  //       likes={likes}
+  //       handleSubmit={addBlog}
+  //     />
+  //   </Togglable>
+  // );
+
   const blogForm = () => (
     <Togglable buttonLabel="new blog" ref={blogFormRef}>
-      <CreateBlog
-        title={title}
-        author={author}
-        url={url}
-        likes={likes}
-        handleSubmit={addBlog}
-      />
+      <CreateBlog handleSubmit={addBlog} />
     </Togglable>
   );
 
   const addBlog = e => {
+    const { title, author, url, likes } = blogFormState;
     e.preventDefault();
     blogFormRef.current.toggleVisibility();
     const blogObject = {
-      title: title.value,
-      author: author.value,
-      url: url.value,
-      likes: likes.value
+      title,
+      author,
+      url,
+      likes
     };
     blogService.create(blogObject).then(data => {
-      props.addNewBlog(data);
-      props.setNotification(
-        `Added a new blog: ${title.value} by ${author.value}`
-      );
+      addNewBlog(data);
+      setNotification(`Added a new blog: ${title} by ${author}`);
     });
   };
 
   const logout = () => {
     window.localStorage.removeItem("loggedBlogappUser");
     setUser(null);
-    props.setNotification("Logout succeed!");
+    setNotification("Logout succeed!");
   };
 
   const increaseLikes = blog => {
-    props.addLikes(blog);
-    props.setNotification(`You voted ${blog.title}`);
+    addLikes(blog);
+    setNotification(`You voted ${blog.title}`, 3000);
   };
 
   const removeBlog = async blog => {
-    props.deleteBlog(blog);
-    props.setNotification(`Deleted ${blog.title}`);
+    console.log(blog);
+    deleteBlog(blog);
+    setNotification(`Deleted ${blog.title}`, 3000);
   };
 
   const blogRowRef = React.createRef();
 
   const rows = () =>
-    props.blogs
+    blogs
       .sort((b1, b2) => b2.likes - b1.likes)
       .map(blog =>
         blog.user.name === user.name ? (
@@ -164,7 +178,8 @@ const App = props => {
 
 const mapStateToProps = state => {
   return {
-    blogs: state.blogs
+    blogs: state.blogs,
+    blogFormState: state.blogForm
   };
 };
 

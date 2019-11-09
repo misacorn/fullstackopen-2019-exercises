@@ -1,48 +1,60 @@
 import React from "react";
 import propTypes from "prop-types";
+import { connect } from "react-redux";
 
-const CreateBlog = ({ handleSubmit, title, author, url, likes }) => {
+import { updateForm, resetForm } from "../reducers/blogFormReducer";
+
+const CreateBlog = ({ handleSubmit, blogForm, updateForm }) => {
+  const { title, author, url, likes } = blogForm;
+
+  const onChange = event => {
+    updateForm(event.target.name, event.target.value);
+    resetForm();
+  };
+
   return (
     <form onSubmit={handleSubmit}>
       <div>
         Title:
-        <input
-          type={title.type}
-          value={title.value}
-          onChange={title.onChange}
-        />
+        <input name="title" value={title} onChange={onChange} />
       </div>
       <div>
         Author:
-        <input
-          type={author.type}
-          value={author.value}
-          onChange={author.onChange}
-        />
+        <input name="author" value={author} onChange={onChange} />
       </div>
       <div>
         Url:
-        <input type={url.type} value={url.value} onChange={url.onChange} />
+        <input name="url" value={url} onChange={onChange} />
       </div>
       <div>
         Likes:
-        <input
-          type={likes.type}
-          value={likes.value}
-          onChange={likes.onChange}
-        />
+        <input name="likes" value={likes} onChange={onChange} />
       </div>
       <button type="submit">create</button>
     </form>
   );
 };
 
-CreateBlog.propTypes = {
-  handleSubmit: propTypes.func.isRequired,
-  title: propTypes.object.isRequired,
-  author: propTypes.object.isRequired,
-  url: propTypes.object.isRequired,
-  likes: propTypes.object.isRequired
+const mapStateToProps = state => {
+  return {
+    blogForm: state.blogForm
+  };
 };
 
-export default CreateBlog;
+const mapDispatchToProps = {
+  updateForm,
+  resetForm
+};
+
+CreateBlog.propTypes = {
+  handleSubmit: propTypes.func.isRequired
+  // title: propTypes.object.isRequired,
+  // author: propTypes.object.isRequired,
+  // url: propTypes.object.isRequired,
+  // likes: propTypes.object.isRequired
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CreateBlog);

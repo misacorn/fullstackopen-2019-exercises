@@ -4,10 +4,12 @@ import { composeWithDevTools } from "redux-devtools-extension";
 
 import blogReducer from "./reducers/blogReducer";
 import notiReducer from "./reducers/notiReducer";
+import blogFormReducer from "./reducers/blogFormReducer";
 
 const reducer = combineReducers({
   blogs: blogReducer,
-  noti: notiReducer
+  noti: notiReducer,
+  blogForm: blogFormReducer
 });
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));

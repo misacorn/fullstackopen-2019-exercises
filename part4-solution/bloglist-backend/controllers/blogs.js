@@ -74,9 +74,10 @@ router.delete("/:id", async (request, response) => {
 
   const blog = await Blog.findById(request.params.id);
 
-  if (blog.user.toString() === decodedToken.id) {
+  if (blog.
+    user.toString() === decodedToken.id) {
     await Blog.findByIdAndRemove(request.params.id);
-    response.status(204).end();
+    response.status(204).json();
   } else {
     response.status(404).end();
   }
