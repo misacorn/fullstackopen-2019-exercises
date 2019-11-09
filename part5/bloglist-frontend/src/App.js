@@ -9,7 +9,12 @@ import CreateBlog from "./components/CreateBlog";
 import Togglable from "./components/Togglable";
 import TogglableBlog from "./components/TogglableBlog";
 
-import { getAllBlogs, addNewBlog } from "./reducers/blogReducer";
+import {
+  getAllBlogs,
+  addNewBlog,
+  addLikes,
+  deleteBlog
+} from "./reducers/blogReducer";
 import { setNotification } from "./reducers/notiReducer";
 import loginService from "./services/login";
 import blogService from "./services/blogs";
@@ -89,10 +94,6 @@ const App = props => {
     };
     blogService.create(blogObject).then(data => {
       props.addNewBlog(data);
-      // title.reset(); // setBlogs(blogs.concat(data));
-      // author.reset();
-      // url.reset();
-      // likes.reset();
       props.setNotification(
         `Added a new blog: ${title.value} by ${author.value}`
       );
@@ -105,20 +106,15 @@ const App = props => {
     props.setNotification("Logout succeed!");
   };
 
-  // const increaseLikes = async blog => {
-  //   const changedBlog = { ...blog, likes: blog.likes + 1 };
-  //   await blogService.update(blog.id, changedBlog);
-  //   setBlogs(blogs.map(b => (b.id !== changedBlog.id ? b : changedBlog)));
-  // };
+  const increaseLikes = blog => {
+    props.addLikes(blog);
+    props.setNotification(`You voted ${blog.title}`);
+  };
 
-  // const removeBlog = async blog => {
-  //   if (window.confirm(`Delete ${blog.title}? by ${blog.author}`)) {
-  //     const newBlogs = blogs.filter(b => b.id !== blog.id);
-  //     await blogService.deletion(blog);
-  //     setBlogs(newBlogs);
-  //     successMessage.onChange(`Deleted ${blog.title}`);
-  //   }
-  // };
+  const removeBlog = async blog => {
+    props.deleteBlog(blog);
+    props.setNotification(`Deleted ${blog.title}`);
+  };
 
   const blogRowRef = React.createRef();
 
@@ -136,8 +132,8 @@ const App = props => {
             <Blog
               key={blog.id}
               blog={blog}
-              // increaseLikes={() => increaseLikes(blog)}
-              // removeBlog={() => removeBlog(blog)}
+              increaseLikes={() => increaseLikes(blog)}
+              removeBlog={() => removeBlog(blog)}
             />
           </TogglableBlog>
         ) : null
@@ -174,8 +170,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   getAllBlogs,
+  addNewBlog,
+  addLikes,
   setNotification,
-  addNewBlog
+  deleteBlog
 };
 
 export default connect(
