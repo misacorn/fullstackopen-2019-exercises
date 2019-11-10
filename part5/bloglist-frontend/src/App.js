@@ -18,6 +18,7 @@ import {
 import { setNotification } from "./reducers/notiReducer";
 import loginService from "./services/login";
 import blogService from "./services/blogs";
+import { resetForm } from "./reducers/blogFormReducer";
 
 const App = ({
   blogs,
@@ -26,16 +27,12 @@ const App = ({
   deleteBlog,
   blogFormState,
   getAllBlogs,
-  addNewBlog
+  addNewBlog,
+  resetForm
 }) => {
   const [user, setUser] = useState(null);
   const username = useField("text");
   const password = useField("text");
-
-  // const title = useField("text");
-  // const author = useField("text");
-  // const url = useField("text");
-  // const likes = useField("text");
 
   useEffect(() => {
     getAllBlogs();
@@ -79,18 +76,6 @@ const App = ({
 
   const blogFormRef = React.createRef();
 
-  // const blogForm = () => (
-  //   <Togglable buttonLabel="new blog" ref={blogFormRef}>
-  //     <CreateBlog
-  //       title={title}
-  //       author={author}
-  //       url={url}
-  //       likes={likes}
-  //       handleSubmit={addBlog}
-  //     />
-  //   </Togglable>
-  // );
-
   const blogForm = () => (
     <Togglable buttonLabel="new blog" ref={blogFormRef}>
       <CreateBlog handleSubmit={addBlog} />
@@ -100,23 +85,28 @@ const App = ({
   const addBlog = e => {
     const { title, author, url, likes } = blogFormState;
     e.preventDefault();
-    blogFormRef.current.toggleVisibility();
-    const blogObject = {
-      title,
-      author,
-      url,
-      likes
-    };
-    blogService.create(blogObject).then(data => {
-      addNewBlog(data);
-      setNotification(`Added a new blog: ${title} by ${author}`);
-    });
+    try {
+      blogFormRef.current.toggleVisibility();
+      const blogObject = {
+        title,
+        author,
+        url,
+        likes
+      };
+      blogService.create(blogObject).then(data => {
+        addNewBlog(data);
+        setNotification(`Added a new blog: ${title} by ${author}`, 3000);
+        resetForm();
+      });
+    } catch (exception) {
+      setNotification(exception.response.data.error, 3000);
+    }
   };
 
   const logout = () => {
     window.localStorage.removeItem("loggedBlogappUser");
     setUser(null);
-    setNotification("Logout succeed!");
+    setNotification("Logout succeed!", 3000);
   };
 
   const increaseLikes = blog => {
@@ -125,7 +115,6 @@ const App = ({
   };
 
   const removeBlog = async blog => {
-    console.log(blog);
     deleteBlog(blog);
     setNotification(`Deleted ${blog.title}`, 3000);
   };
@@ -188,7 +177,8 @@ const mapDispatchToProps = {
   addNewBlog,
   addLikes,
   setNotification,
-  deleteBlog
+  deleteBlog,
+  resetForm
 };
 
 export default connect(

@@ -9,7 +9,6 @@ const CreateBlog = ({ handleSubmit, blogForm, updateForm }) => {
 
   const onChange = event => {
     updateForm(event.target.name, event.target.value);
-    resetForm();
   };
 
   return (
@@ -47,11 +46,9 @@ const mapDispatchToProps = {
 };
 
 CreateBlog.propTypes = {
-  handleSubmit: propTypes.func.isRequired
-  // title: propTypes.object.isRequired,
-  // author: propTypes.object.isRequired,
-  // url: propTypes.object.isRequired,
-  // likes: propTypes.object.isRequired
+  handleSubmit: propTypes.func.isRequired,
+  blogForm: propTypes.object.isRequired,
+  updateForm: propTypes.func.isRequired
 };
 
 export default connect(

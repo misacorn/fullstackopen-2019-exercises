@@ -29,7 +29,7 @@ router.post("/", async (request, response) => {
   if (!blog.url || !blog.title) {
     return response
       .status(400)
-      .send({ error: "Title or url missing" })
+      .json({ error: "Title or url missing" })
       .end();
   }
 
@@ -74,10 +74,9 @@ router.delete("/:id", async (request, response) => {
 
   const blog = await Blog.findById(request.params.id);
 
-  if (blog.
-    user.toString() === decodedToken.id) {
+  if (blog.user.toString() === decodedToken.id) {
     await Blog.findByIdAndRemove(request.params.id);
-    response.status(204).json();
+    response.status(204).end();
   } else {
     response.status(404).end();
   }
