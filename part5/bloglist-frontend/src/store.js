@@ -5,13 +5,18 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import blogReducer from "./reducers/blogReducer";
 import notiReducer from "./reducers/notiReducer";
 import blogFormReducer from "./reducers/blogFormReducer";
+import userReducer from "./reducers/userReducer";
 
-const reducer = combineReducers({
+const reducers = combineReducers({
   blogs: blogReducer,
   noti: notiReducer,
-  blogForm: blogFormReducer
+  blogForm: blogFormReducer,
+  user: userReducer
 });
 
-const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
+const store = createStore(
+  reducers,
+  composeWithDevTools(applyMiddleware(thunk))
+);
 
 export default store;

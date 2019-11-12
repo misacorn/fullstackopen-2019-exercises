@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { useField } from "./hooks";
 
@@ -16,9 +16,11 @@ import {
   deleteBlog
 } from "./reducers/blogReducer";
 import { setNotification } from "./reducers/notiReducer";
+import { resetForm } from "./reducers/blogFormReducer";
+import { setUser } from "./reducers/userReducer";
+
 import loginService from "./services/login";
 import blogService from "./services/blogs";
-import { resetForm } from "./reducers/blogFormReducer";
 
 const App = ({
   blogs,
@@ -28,9 +30,10 @@ const App = ({
   blogFormState,
   getAllBlogs,
   addNewBlog,
-  resetForm
+  resetForm,
+  setUser,
+  user
 }) => {
-  const [user, setUser] = useState(null);
   const username = useField("text");
   const password = useField("text");
 
@@ -41,9 +44,9 @@ const App = ({
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
-      setUser(user);
-      blogService.setToken(user.token);
+      const persistedUser = JSON.parse(loggedUserJSON);
+      setUser(persistedUser);
+      blogService.setToken(persistedUser.token);
     }
   }, []);
 
@@ -55,7 +58,9 @@ const App = ({
         username: username.value,
         password: password.value
       });
-      window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
+      if (user) {
+        window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
+      }
       blogService.setToken(user.token);
       setUser(user);
       username.reset();
@@ -168,7 +173,8 @@ const App = ({
 const mapStateToProps = state => {
   return {
     blogs: state.blogs,
-    blogFormState: state.blogForm
+    blogFormState: state.blogForm,
+    user: state.user
   };
 };
 
@@ -178,7 +184,8 @@ const mapDispatchToProps = {
   addLikes,
   setNotification,
   deleteBlog,
-  resetForm
+  resetForm,
+  setUser
 };
 
 export default connect(
