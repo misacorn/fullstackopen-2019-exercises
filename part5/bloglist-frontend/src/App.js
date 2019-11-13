@@ -18,6 +18,7 @@ import {
 import { setNotification } from "./reducers/notiReducer";
 import { resetForm } from "./reducers/blogFormReducer";
 import { setUser } from "./reducers/userReducer";
+import { addUser } from "./reducers/allUserReducer";
 
 import loginService from "./services/login";
 import blogService from "./services/blogs";
@@ -32,7 +33,9 @@ const App = ({
   addNewBlog,
   resetForm,
   setUser,
-  user
+  user,
+  addUser,
+  allUsers
 }) => {
   const username = useField("text");
   const password = useField("text");
@@ -48,7 +51,17 @@ const App = ({
       setUser(persistedUser);
       blogService.setToken(persistedUser.token);
     }
-  }, []);
+  }, [setUser]);
+
+  useEffect(() => {
+    if (user && user.username) {
+      if (!allUsers.some(u => u.username === user.username)) {
+        addUser(user.username, user.blogs.length());
+      }
+    }
+  }, [addUser]);
+
+  // console.log({ user, allUsers });
 
   const handleLogin = async event => {
     event.preventDefault();
@@ -158,8 +171,10 @@ const App = ({
         <div>
           <h2>Blogs</h2>
           <div>
-            {user.name} logged in {""}
-            <button onClick={logout}>logout</button>
+            {user.name} logged in
+            <p>
+              <button onClick={logout}>logout</button>
+            </p>
           </div>
           <h2>Create a new blog</h2>
           {blogForm()}
@@ -174,7 +189,8 @@ const mapStateToProps = state => {
   return {
     blogs: state.blogs,
     blogFormState: state.blogForm,
-    user: state.user
+    user: state.user,
+    allUsers: state.allUsers
   };
 };
 
@@ -185,10 +201,8 @@ const mapDispatchToProps = {
   setNotification,
   deleteBlog,
   resetForm,
-  setUser
+  setUser,
+  addUser
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
