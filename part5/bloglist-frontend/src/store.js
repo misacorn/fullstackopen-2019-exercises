@@ -6,14 +6,14 @@ import blogReducer from "./reducers/blogReducer";
 import notiReducer from "./reducers/notiReducer";
 import blogFormReducer from "./reducers/blogFormReducer";
 import userReducer from "./reducers/userReducer";
-import allUserReducer from "./reducers/allUserReducer";
+import allUsersReducer from "./reducers/allUsersReducer";
 
 const reducers = combineReducers({
   blogs: blogReducer,
   noti: notiReducer,
   blogForm: blogFormReducer,
   user: userReducer,
-  allUsers: allUserReducer
+  allUsers: allUsersReducer
 });
 
 const store = createStore(

@@ -18,7 +18,7 @@ import {
 import { setNotification } from "./reducers/notiReducer";
 import { resetForm } from "./reducers/blogFormReducer";
 import { setUser } from "./reducers/userReducer";
-import { addUser } from "./reducers/allUserReducer";
+import { addUser } from "./reducers/allUsersReducer";
 
 import loginService from "./services/login";
 import blogService from "./services/blogs";
@@ -42,7 +42,7 @@ const App = ({
 
   useEffect(() => {
     getAllBlogs();
-  }, [getAllBlogs]);
+  }, []);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
@@ -54,14 +54,15 @@ const App = ({
   }, [setUser]);
 
   useEffect(() => {
-    if (user && user.username) {
+    if (user && user.username && blogs.length > 0) {
       if (!allUsers.some(u => u.username === user.username)) {
-        addUser(user.username, user.blogs.length());
+        const blogsCreated = blogs.filter(
+          blog => blog.user.username === user.name
+        ).length;
+        addUser(user.username, blogsCreated);
       }
     }
-  }, [addUser]);
-
-  // console.log({ user, allUsers });
+  }, [user, blogs]);
 
   const handleLogin = async event => {
     event.preventDefault();
@@ -162,7 +163,7 @@ const App = ({
   return (
     <div>
       <Notification />
-      {user === null ? (
+      {!user.username ? (
         <div>
           <h2>Blogs</h2>
           {loginForm()}
