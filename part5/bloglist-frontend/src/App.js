@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { useField } from "./hooks";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import Blog from "./components/Blog";
 import Notification from "./components/Notification";
@@ -19,7 +20,7 @@ import {
 import { setNotification } from "./reducers/notiReducer";
 import { resetForm } from "./reducers/blogFormReducer";
 import { setUser, resetUser } from "./reducers/userReducer";
-import { getAllUsers, addUser } from "./reducers/allUsersReducer";
+import { getAllUsers } from "./reducers/allUsersReducer";
 
 import loginService from "./services/login";
 import blogService from "./services/blogs";
@@ -36,9 +37,7 @@ const App = ({
   setUser,
   user,
   getAllUsers,
-  addUser,
-  resetUser,
-  allUsers
+  resetUser
 }) => {
   const username = useField("text");
   const password = useField("text");
@@ -59,24 +58,6 @@ const App = ({
       blogService.setToken(persistedUser.token);
     }
   }, [setUser]);
-
-  useEffect(() => {
-    if (user && blogs.length > 0) {
-      const usernameArr = blogs.map(a => ({
-        username: a.user.username,
-        blogs: blogs.filter(blog => blog.user.username === a.user.username)
-          .length
-      }));
-
-      const allUsernames = usernameArr.filter(
-        (v, i, a) =>
-          a.findIndex(t => JSON.stringify(t) === JSON.stringify(v)) === i
-      );
-      console.log(allUsernames);
-      // console.log(usernameArr);
-      // console.log(user.blogs);
-    }
-  }, [user, blogs]);
 
   const handleLogin = async event => {
     event.preventDefault();
@@ -174,30 +155,68 @@ const App = ({
           </TogglableBlog>
         ) : null
       );
+
+  const padding = {
+    paddingRight: 15
+  };
+
   return (
-    <div>
+    <>
       <Notification />
       {!user.username ? (
-        <div>
+        <>
           <h2>Blogs</h2>
           {loginForm()}
-        </div>
+        </>
       ) : (
-        <div>
-          <h2>Blogs</h2>
-          <div>
-            {user.name} logged in
-            <p>
-              <button onClick={logout}>logout</button>
-            </p>
-          </div>
-          <h2>Create a new blog</h2>
-          {blogForm()}
-          {rows()}
-          <AllUsers allUsers={allUsers} />
-        </div>
+        <>
+          <Router>
+            <>
+              <Link style={padding} to="/">
+                Blogs
+              </Link>
+              <Link style={padding} to="/users">
+                Users
+              </Link>
+            </>
+            <Route
+              exact
+              path="/"
+              render={() => (
+                <>
+                  <h2>Blogs</h2>
+                  <>
+                    {user.name} logged in
+                    <p>
+                      <button onClick={logout}>logout</button>
+                    </p>
+                  </>
+                  <h2>Create a new blog</h2>
+                  {blogForm()}
+                  {rows()}
+                </>
+              )}
+            />
+            <Route
+              exact
+              path="/users"
+              render={() => (
+                <>
+                  <h2>Blogs</h2>
+                  <>
+                    {user.name} logged in
+                    <p>
+                      <button onClick={logout}>logout</button>
+                    </p>
+                  </>
+                  <AllUsers />
+                </>
+              )}
+            />
+          </Router>
+        </>
       )}
-    </div>
+    </>
   );
 };
 
@@ -205,8 +224,7 @@ const mapStateToProps = state => {
   return {
     blogs: state.blogs,
     blogFormState: state.blogForm,
-    user: state.user,
-    allUsers: state.allUsers
+    user: state.user
   };
 };
 
@@ -219,8 +237,7 @@ const mapDispatchToProps = {
   resetForm,
   setUser,
   resetUser,
-  getAllUsers,
-  addUser
+  getAllUsers
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
