@@ -36,6 +36,7 @@ const App = ({
   resetForm,
   setUser,
   user,
+  allUsers,
   getAllUsers,
   resetUser
 }) => {
@@ -209,7 +210,7 @@ const App = ({
                       <button onClick={logout}>logout</button>
                     </p>
                   </>
-                  <AllUsers />
+                  <AllUsers allUsers={allUsers} />
                 </>
               )}
             />
@@ -224,7 +225,8 @@ const mapStateToProps = state => {
   return {
     blogs: state.blogs,
     blogFormState: state.blogForm,
-    user: state.user
+    user: state.user,
+    allUsers: state.allUsers
   };
 };
 

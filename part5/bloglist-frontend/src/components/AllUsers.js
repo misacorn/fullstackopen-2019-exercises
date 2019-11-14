@@ -1,8 +1,5 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
+import React from "react";
 import styled from "styled-components";
-
-import { getAllUsers } from "../reducers/allUsersReducer";
 
 const TableStyle = styled.div`
   th,
@@ -11,11 +8,7 @@ const TableStyle = styled.div`
   }
 `;
 
-const AllUsers = ({ allUsers, getAllUsers }) => {
-  useEffect(() => {
-    getAllUsers();
-  }, [getAllUsers]);
-
+const AllUsers = ({ allUsers }) => {
   const showUser = () =>
     allUsers.map(user => (
       <tr key={user.username}>
@@ -34,31 +27,11 @@ const AllUsers = ({ allUsers, getAllUsers }) => {
               <th>Blogs Created</th>
             </tr>
           </thead>
-          <tbody>
-            {/* <tr> */}
-            {/* <td>Cell 1</td>
-              <td>Cell 2</td> */}
-            {allUsers ? showUser() : null}
-            {/* </tr> */}
-            {/* <tr>
-              <td>Cell 3</td>
-              <td>Cell 4</td>
-            </tr> */}
-          </tbody>
+          <tbody>{allUsers ? showUser() : null}</tbody>
         </table>
       </TableStyle>
     </>
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    allUsers: state.allUser
-  };
-};
-
-const mapDispatchToProps = {
-  getAllUsers
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(AllUsers);
+export default AllUsers;
