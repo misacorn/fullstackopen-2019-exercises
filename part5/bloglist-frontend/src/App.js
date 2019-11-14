@@ -19,7 +19,7 @@ import {
 import { setNotification } from "./reducers/notiReducer";
 import { resetForm } from "./reducers/blogFormReducer";
 import { setUser, resetUser } from "./reducers/userReducer";
-import { addUser } from "./reducers/allUsersReducer";
+import { getAllUsers, addUser } from "./reducers/allUsersReducer";
 
 import loginService from "./services/login";
 import blogService from "./services/blogs";
@@ -35,6 +35,7 @@ const App = ({
   resetForm,
   setUser,
   user,
+  getAllUsers,
   addUser,
   resetUser,
   allUsers
@@ -47,6 +48,10 @@ const App = ({
   }, [getAllBlogs]);
 
   useEffect(() => {
+    getAllUsers();
+  }, [getAllUsers]);
+
+  useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
     if (loggedUserJSON) {
       const persistedUser = JSON.parse(loggedUserJSON);
@@ -56,19 +61,20 @@ const App = ({
   }, [setUser]);
 
   useEffect(() => {
-    if (user && user.username && blogs.length > 0) {
-      if (!allUsers.some(u => u.username === user.username)) {
-        const usernameArr = blogs.map(a => ({
-          username: a.user.username,
-          blogs: blogs.filter(blog => blog.user.username === a.user.username)
-            .length
-        }));
-        const allUsernames = usernameArr.filter(
-          (v, i, a) =>
-            a.findIndex(t => JSON.stringify(t) === JSON.stringify(v)) === i
-        );
-        addUser(allUsernames);
-      }
+    if (user && blogs.length > 0) {
+      const usernameArr = blogs.map(a => ({
+        username: a.user.username,
+        blogs: blogs.filter(blog => blog.user.username === a.user.username)
+          .length
+      }));
+
+      const allUsernames = usernameArr.filter(
+        (v, i, a) =>
+          a.findIndex(t => JSON.stringify(t) === JSON.stringify(v)) === i
+      );
+      console.log(allUsernames);
+      // console.log(usernameArr);
+      // console.log(user.blogs);
     }
   }, [user, blogs]);
 
@@ -213,6 +219,7 @@ const mapDispatchToProps = {
   resetForm,
   setUser,
   resetUser,
+  getAllUsers,
   addUser
 };
 
