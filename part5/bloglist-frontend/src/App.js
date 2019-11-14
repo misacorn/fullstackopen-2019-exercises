@@ -8,6 +8,7 @@ import Login from "./components/Login";
 import CreateBlog from "./components/CreateBlog";
 import Togglable from "./components/Togglable";
 import TogglableBlog from "./components/TogglableBlog";
+import AllUsers from "./components/AllUsers";
 
 import {
   getAllBlogs,
@@ -17,7 +18,7 @@ import {
 } from "./reducers/blogReducer";
 import { setNotification } from "./reducers/notiReducer";
 import { resetForm } from "./reducers/blogFormReducer";
-import { setUser } from "./reducers/userReducer";
+import { setUser, resetUser } from "./reducers/userReducer";
 import { addUser } from "./reducers/allUsersReducer";
 
 import loginService from "./services/login";
@@ -35,6 +36,7 @@ const App = ({
   setUser,
   user,
   addUser,
+  resetUser,
   allUsers
 }) => {
   const username = useField("text");
@@ -42,7 +44,7 @@ const App = ({
 
   useEffect(() => {
     getAllBlogs();
-  }, []);
+  }, [getAllBlogs]);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
@@ -56,10 +58,16 @@ const App = ({
   useEffect(() => {
     if (user && user.username && blogs.length > 0) {
       if (!allUsers.some(u => u.username === user.username)) {
-        const blogsCreated = blogs.filter(
-          blog => blog.user.username === user.name
-        ).length;
-        addUser(user.username, blogsCreated);
+        const usernameArr = blogs.map(a => ({
+          username: a.user.username,
+          blogs: blogs.filter(blog => blog.user.username === a.user.username)
+            .length
+        }));
+        const allUsernames = usernameArr.filter(
+          (v, i, a) =>
+            a.findIndex(t => JSON.stringify(t) === JSON.stringify(v)) === i
+        );
+        addUser(allUsernames);
       }
     }
   }, [user, blogs]);
@@ -124,7 +132,7 @@ const App = ({
 
   const logout = () => {
     window.localStorage.removeItem("loggedBlogappUser");
-    setUser(null);
+    resetUser();
     setNotification("Logout succeed!", 3000);
   };
 
@@ -180,6 +188,7 @@ const App = ({
           <h2>Create a new blog</h2>
           {blogForm()}
           {rows()}
+          <AllUsers allUsers={allUsers} />
         </div>
       )}
     </div>
@@ -203,6 +212,7 @@ const mapDispatchToProps = {
   deleteBlog,
   resetForm,
   setUser,
+  resetUser,
   addUser
 };
 

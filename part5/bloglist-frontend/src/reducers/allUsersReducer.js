@@ -11,9 +11,9 @@ const allUsersReducer = (state = initialState, action) => {
 
 export default allUsersReducer;
 
-export const addUser = (username, blogsCreated) => {
+export const addUser = (users) => {
   return {
     type: "ADD_NEW",
-    data: { username, blogsCreated }
+    data: users
   };
 };
