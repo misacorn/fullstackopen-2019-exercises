@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
+import Users from "./Users";
+
 const TableStyle = styled.div`
   th,
   td {
@@ -10,12 +12,7 @@ const TableStyle = styled.div`
 
 const AllUsers = ({ allUsers }) => {
   const showUser = () =>
-    allUsers.map(user => (
-      <tr key={user.username}>
-        <td>{user.name}</td>
-        <td>{user.blogs.length}</td>
-      </tr>
-    ));
+    allUsers.map(user => <Users key={user.username} user={user} />);
   return (
     <>
       <h2>Users</h2>

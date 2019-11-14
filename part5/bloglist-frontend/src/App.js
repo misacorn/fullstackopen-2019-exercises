@@ -10,6 +10,8 @@ import CreateBlog from "./components/CreateBlog";
 import Togglable from "./components/Togglable";
 import TogglableBlog from "./components/TogglableBlog";
 import AllUsers from "./components/AllUsers";
+import SignedUser from "./components/SignedUser";
+import User from "./components/User";
 
 import {
   getAllBlogs,
@@ -185,13 +187,7 @@ const App = ({
               path="/"
               render={() => (
                 <>
-                  <h2>Blogs</h2>
-                  <>
-                    {user.name} logged in
-                    <p>
-                      <button onClick={logout}>logout</button>
-                    </p>
-                  </>
+                  <SignedUser name={user.name} logout={logout} />
                   <h2>Create a new blog</h2>
                   {blogForm()}
                   {rows()}
@@ -203,14 +199,21 @@ const App = ({
               path="/users"
               render={() => (
                 <>
-                  <h2>Blogs</h2>
-                  <>
-                    {user.name} logged in
-                    <p>
-                      <button onClick={logout}>logout</button>
-                    </p>
-                  </>
+                  <SignedUser name={user.name} logout={logout} />
                   <AllUsers allUsers={allUsers} />
+                </>
+              )}
+            />
+            <Route
+              path="/users/:id"
+              render={({
+                match: {
+                  params: { id }
+                }
+              }) => (
+                <>
+                  <SignedUser name={user.name} logout={logout} />
+                  <User id={id} allUsers={allUsers}/>
                 </>
               )}
             />

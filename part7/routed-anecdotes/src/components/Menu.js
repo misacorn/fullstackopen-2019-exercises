@@ -19,8 +19,8 @@ const Menu = ({
 
   return (
     <Router>
-      <div>
-        <div>
+      <>
+        <>
           <Link style={padding} to="/">
             anecdotes
           </Link>
@@ -30,7 +30,7 @@ const Menu = ({
           <Link style={padding} to="/about">
             about
           </Link>
-        </div>
+        </>
 
         {notification ? <p>{notification}</p> : null}
 
@@ -54,7 +54,7 @@ const Menu = ({
             <Anecdote anecdote={anecdoteById(match.params.id)} />
           )}
         />
-      </div>
+      </>
     </Router>
   );
 };
