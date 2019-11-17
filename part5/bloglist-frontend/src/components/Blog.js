@@ -22,7 +22,7 @@ const Blog = ({ id, blogs, increaseLikes, removeBlog }) => {
 };
 
 Blog.propTypes = {
-  blogs: propTypes.object.isRequired,
+  blogs: propTypes.array.isRequired,
   id: propTypes.string.isRequired,
   increaseLikes: propTypes.func.isRequired,
   removeBlog: propTypes.func.isRequired

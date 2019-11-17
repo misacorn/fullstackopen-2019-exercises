@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { useField } from "./hooks";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import styled from "styled-components";
 
 import Blogs from "./components/Blogs";
 import Blog from "./components/Blog";
@@ -10,7 +11,6 @@ import Login from "./components/Login";
 import CreateBlog from "./components/CreateBlog";
 import Togglable from "./components/Togglable";
 import AllUsers from "./components/AllUsers";
-import SignedUser from "./components/SignedUser";
 import User from "./components/User";
 
 import {
@@ -149,6 +149,12 @@ const App = ({
     paddingRight: 15
   };
 
+  const MenuStyle = styled.div`
+    display: flex;
+    flex-direction: row;
+    background: lightgray;
+  `;
+
   return (
     <>
       <Notification />
@@ -160,21 +166,24 @@ const App = ({
       ) : (
         <>
           <Router>
-            <>
+            <MenuStyle>
               <Link style={padding} to="/">
                 Blogs
               </Link>
               <Link style={padding} to="/users">
                 Users
               </Link>
-            </>
+              <div>
+                {user.name} logged in
+                <button onClick={logout}>logout</button>
+              </div>
+            </MenuStyle>
             <Route
               exact
               path="/"
               render={() => (
                 <>
-                  <SignedUser name={user.name} logout={logout} />
-                  <h2>Create a new blog</h2>
+                  <h2>Blog App</h2>
                   {blogForm()}
                   {rows()}
                 </>
@@ -185,7 +194,6 @@ const App = ({
               path="/users"
               render={() => (
                 <>
-                  <SignedUser name={user.name} logout={logout} />
                   <AllUsers allUsers={allUsers} />
                 </>
               )}
@@ -198,7 +206,6 @@ const App = ({
                 }
               }) => (
                 <>
-                  <SignedUser name={user.name} logout={logout} />
                   <User id={id} allUsers={allUsers} />
                 </>
               )}
@@ -211,7 +218,6 @@ const App = ({
                 }
               }) => (
                 <>
-                  <SignedUser name={user.name} logout={logout} />
                   <Blog
                     id={id}
                     blogs={blogs}
