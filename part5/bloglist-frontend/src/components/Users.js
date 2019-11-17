@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import propTypes from "prop-types";
 
 const Users = ({ user }) => (
   <>
@@ -11,5 +12,9 @@ const Users = ({ user }) => (
     </tr>
   </>
 );
+
+Users.propTypes = {
+  user: propTypes.object.isRequired
+};
 
 export default Users;

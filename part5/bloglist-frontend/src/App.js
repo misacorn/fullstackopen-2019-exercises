@@ -3,12 +3,12 @@ import { connect } from "react-redux";
 import { useField } from "./hooks";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
+import Blogs from "./components/Blogs";
 import Blog from "./components/Blog";
 import Notification from "./components/Notification";
 import Login from "./components/Login";
 import CreateBlog from "./components/CreateBlog";
 import Togglable from "./components/Togglable";
-import TogglableBlog from "./components/TogglableBlog";
 import AllUsers from "./components/AllUsers";
 import SignedUser from "./components/SignedUser";
 import User from "./components/User";
@@ -136,26 +136,12 @@ const App = ({
     setNotification(`Deleted ${blog.title}`, 3000);
   };
 
-  const blogRowRef = React.createRef();
-
   const rows = () =>
     blogs
       .sort((b1, b2) => b2.likes - b1.likes)
       .map(blog =>
         blog.user.name === user.name ? (
-          <TogglableBlog
-            key={blog.id}
-            title={blog.title}
-            author={blog.author}
-            ref={blogRowRef}
-          >
-            <Blog
-              key={blog.id}
-              blog={blog}
-              increaseLikes={() => increaseLikes(blog)}
-              removeBlog={() => removeBlog(blog)}
-            />
-          </TogglableBlog>
+          <Blogs key={blog.id} blog={blog} />
         ) : null
       );
 
@@ -213,7 +199,25 @@ const App = ({
               }) => (
                 <>
                   <SignedUser name={user.name} logout={logout} />
-                  <User id={id} allUsers={allUsers}/>
+                  <User id={id} allUsers={allUsers} />
+                </>
+              )}
+            />
+            <Route
+              path="/blogs/:id"
+              render={({
+                match: {
+                  params: { id }
+                }
+              }) => (
+                <>
+                  <SignedUser name={user.name} logout={logout} />
+                  <Blog
+                    id={id}
+                    blogs={blogs}
+                    increaseLikes={increaseLikes}
+                    removeBlog={removeBlog}
+                  />
                 </>
               )}
             />

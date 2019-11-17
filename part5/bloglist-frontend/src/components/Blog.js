@@ -1,30 +1,29 @@
 import React from "react";
 import propTypes from "prop-types";
 
-const Blog = ({ blog, increaseLikes, removeBlog }) => {
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: "solid",
-    borderWidth: 1,
-    marginBottom: 5
-  };
+const Blog = ({ id, blogs, increaseLikes, removeBlog }) => {
+  const blogDetails = blogs.find(blog => blog.id === id);
   return (
-    <div className="blog" style={blogStyle}>
-      {/* <div>{blog.author}</div> */}
-      <div>{blog.url}</div>
-      <div>
-        {blog.likes} likes
-        <button onClick={increaseLikes}>like</button>
-      </div>
-      <div>Added by {blog.user.name}</div>
-      <button onClick={removeBlog}>remove</button>
-    </div>
+    <>
+      {blogDetails && (
+        <>
+          <h2>{blogDetails.title}</h2>
+          <div>{blogDetails.url}</div>
+          <div>
+            {blogDetails.likes} likes
+            <button onClick={() => increaseLikes(blogDetails)}>like</button>
+          </div>
+          <div>Added by {blogDetails.user.name}</div>
+          <button onClick={() => removeBlog(blogDetails)}>remove</button>
+        </>
+      )}
+    </>
   );
 };
 
 Blog.propTypes = {
-  blog: propTypes.object.isRequired,
+  blogs: propTypes.object.isRequired,
+  id: propTypes.string.isRequired,
   increaseLikes: propTypes.func.isRequired,
   removeBlog: propTypes.func.isRequired
 };

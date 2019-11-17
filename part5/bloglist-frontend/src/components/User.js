@@ -1,4 +1,5 @@
 import React from "react";
+import propTypes from "prop-types";
 
 const User = ({ id, allUsers }) => {
   const userById = allUsers.find(user => user.id === id);
@@ -16,6 +17,11 @@ const User = ({ id, allUsers }) => {
       )}
     </>
   );
+};
+
+User.propTypes = {
+  allUsers: propTypes.object.isRequired,
+  id: propTypes.string.isRequired
 };
 
 export default User;
