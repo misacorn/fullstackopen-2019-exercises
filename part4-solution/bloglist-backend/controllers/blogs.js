@@ -9,6 +9,20 @@ router.get("/", async (request, response) => {
   response.json(blogs.map(b => b.toJSON()));
 });
 
+router.get("/:id", async (request, response) => {
+  const blog = await Blog.findById(request.params.id);
+  response.json(blog.toJSON());
+});
+
+router.post("/:id/comments", async (request, response) => {
+  const { comment } = request.body;
+  const blog = await Blog.findById(request.params.id);
+  blog.comments = blog.comments.concat(comment);
+  await blog.save();
+
+  response.status(201).json(comment);
+});
+
 router.post("/", async (request, response) => {
   const blog = new Blog(request.body);
 
@@ -54,11 +68,11 @@ router.put("/:id", async (request, response) => {
     likes
   };
 
-  const updatedNote = await Blog.findByIdAndUpdate(request.params.id, blog, {
+  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {
     new: true
   });
 
-  response.json(updatedNote.toJSON());
+  response.json(updatedBlog.toJSON());
 });
 
 router.delete("/:id", async (request, response) => {
