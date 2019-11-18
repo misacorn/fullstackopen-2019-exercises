@@ -3,6 +3,8 @@ import propTypes from "prop-types";
 
 const Blog = ({ id, blogs, increaseLikes, removeBlog }) => {
   const blogDetails = blogs.find(blog => blog.id === id);
+  const showComments = () =>
+    blogDetails.comments.map(c => <li key={c}>{c}</li>);
   return (
     <>
       {blogDetails && (
@@ -15,6 +17,8 @@ const Blog = ({ id, blogs, increaseLikes, removeBlog }) => {
           </div>
           <div>Added by {blogDetails.user.name}</div>
           <button onClick={() => removeBlog(blogDetails)}>remove</button>
+          <h4>Comments</h4>
+          <ul>{showComments()}</ul>
         </>
       )}
     </>
