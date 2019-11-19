@@ -1,14 +1,8 @@
 import React from "react";
-import styled from "styled-components";
+import { Table } from "semantic-ui-react";
+import propTypes from "prop-types";
 
 import Users from "./Users";
-
-const TableStyle = styled.div`
-  th,
-  td {
-    padding-right: 25px;
-  }
-`;
 
 const AllUsers = ({ allUsers }) => {
   const showUser = () =>
@@ -16,19 +10,21 @@ const AllUsers = ({ allUsers }) => {
   return (
     <>
       <h2>Users</h2>
-      <TableStyle>
-        <table>
-          <thead id="myTHead">
-            <tr>
-              <th>Name</th>
-              <th>Blogs Created</th>
-            </tr>
-          </thead>
-          <tbody>{allUsers ? showUser() : null}</tbody>
-        </table>
-      </TableStyle>
+      <Table basic="very" celled collapsing>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell>Names</Table.HeaderCell>
+            <Table.HeaderCell>Blogs Created</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        {allUsers ? showUser() : null}
+      </Table>
     </>
   );
+};
+
+AllUsers.propTypes = {
+  allUsers: propTypes.array.isRequired
 };
 
 export default AllUsers;

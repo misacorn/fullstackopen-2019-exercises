@@ -2,6 +2,7 @@ import React from "react";
 import { Menu, Button } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import propTypes from "prop-types";
 
 const PaddingRight = styled.div`
   padding-right: 15px;
@@ -23,5 +24,10 @@ const Header = ({ user, logout }) => (
     </Menu.Item>
   </Menu>
 );
+
+Header.propTypes = {
+  user: propTypes.object.isRequired,
+  logout: propTypes.func.isRequired
+};
 
 export default Header;

@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 
+
 const NotiWrapper = styled.div`
   /* color: ${props => (props.hasError ? "red" : "green")}; */
   background: lightgrey;

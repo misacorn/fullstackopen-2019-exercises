@@ -1,7 +1,7 @@
 import React from "react";
 import propTypes from "prop-types";
 import { connect } from "react-redux";
-import { Input, Button } from "semantic-ui-react";
+import { Form, Button } from "semantic-ui-react";
 
 import { addNewComment } from "../reducers/blogReducer";
 import { setNotification } from "../reducers/notiReducer";
@@ -47,10 +47,13 @@ const Blog = ({
           <div>Added by {blogDetails.user.name}</div>
           <button onClick={() => removeBlog(blogDetails)}>remove</button>
           <h3>Comments</h3>
-          <form onSubmit={handleSubmit}>
-            <Input name="comment" placeholder="Add a new comment..." />
+          <Form onSubmit={handleSubmit}>
+            <Form.Field>
+              <label>Add a comment</label>
+              <input name="comment" placeholder="commenting..." />
+            </Form.Field>
             <Button type="submit">Add</Button>
-          </form>
+          </Form>
           <ul>{showComments()}</ul>
         </>
       )}

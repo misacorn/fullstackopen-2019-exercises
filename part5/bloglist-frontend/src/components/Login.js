@@ -1,40 +1,41 @@
 import React from "react";
 import propTypes from "prop-types";
-import { Button, Input } from "semantic-ui-react";
+import { Form } from "semantic-ui-react";
 import styled from "styled-components";
 
 const Padding = styled.div`
-  padding: 15px 0;
+  padding-bottom: 15px;
 `;
 
 const Login = ({ onSubmit, username, password }) => {
   return (
     <div>
       <h2>Login</h2>
-
-      <form onSubmit={onSubmit}>
-        <div>
-          Username:
-          <Input
+      <Form onSubmit={onSubmit}>
+        <Form.Group widths="equal">
+          <Form.Input
+            fluid
+            label="Username"
+            placeholder="Username"
             className="input1"
             type={username.type}
             value={username.value}
             onChange={username.onChange}
           />
-        </div>
-        <div>
-          Password:
-          <Input
+          <Form.Input
+            fluid
+            label="Password"
+            placeholder="Password"
             className="input2"
             type={password.type}
             value={password.value}
             onChange={password.onChange}
           />
-        </div>
+        </Form.Group>
         <Padding>
-          <Button type="submit">login</Button>
+          <Form.Button>Login</Form.Button>
         </Padding>
-      </form>
+      </Form>
     </div>
   );
 };

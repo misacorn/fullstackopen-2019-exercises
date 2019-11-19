@@ -1,16 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import propTypes from "prop-types";
+import { Table } from "semantic-ui-react";
 
 const Users = ({ user }) => (
-  <>
-    <tr>
-      <td>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
         <Link to={`/users/${user.id}`}>{user.name}</Link>
-      </td>
-      <td>{user.blogs.length}</td>
-    </tr>
-  </>
+      </Table.Cell>
+      <Table.Cell>{user.blogs.length}</Table.Cell>
+    </Table.Row>
+  </Table.Body>
 );
 
 Users.propTypes = {

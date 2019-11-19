@@ -20,7 +20,7 @@ const User = ({ id, allUsers }) => {
 };
 
 User.propTypes = {
-  allUsers: propTypes.object.isRequired,
+  allUsers: propTypes.array.isRequired,
   id: propTypes.string.isRequired
 };
 
