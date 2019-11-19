@@ -216,7 +216,6 @@ const App = ({
                 <>
                   <Blog
                     id={id}
-                    blogs={blogs}
                     increaseLikes={increaseLikes}
                     removeBlog={removeBlog}
                   />
