@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { useField } from "./hooks";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import styled from "styled-components";
+import { Container } from "semantic-ui-react";
 
 import Blogs from "./components/Blogs";
 import Blog from "./components/Blog";
@@ -12,6 +13,7 @@ import CreateBlog from "./components/CreateBlog";
 import Togglable from "./components/Togglable";
 import AllUsers from "./components/AllUsers";
 import User from "./components/User";
+import Header from "./components/Header";
 
 import {
   getAllBlogs,
@@ -141,18 +143,8 @@ const App = ({
       .sort((b1, b2) => b2.likes - b1.likes)
       .map(blog => <Blogs key={blog.id} blog={blog} />);
 
-  const padding = {
-    paddingRight: 15
-  };
-
-  const MenuStyle = styled.div`
-    display: flex;
-    flex-direction: row;
-    background: lightgray;
-  `;
-
   return (
-    <>
+    <Container>
       <Notification />
       {!user.username ? (
         <>
@@ -162,18 +154,7 @@ const App = ({
       ) : (
         <>
           <Router>
-            <MenuStyle>
-              <Link style={padding} to="/">
-                Blogs
-              </Link>
-              <Link style={padding} to="/users">
-                Users
-              </Link>
-              <div>
-                {user.name} logged in
-                <button onClick={logout}>logout</button>
-              </div>
-            </MenuStyle>
+            <Header user={user} logout={logout}></Header>
             <Route
               exact
               path="/"
@@ -225,7 +206,7 @@ const App = ({
           </Router>
         </>
       )}
-    </>
+    </Container>
   );
 };
 

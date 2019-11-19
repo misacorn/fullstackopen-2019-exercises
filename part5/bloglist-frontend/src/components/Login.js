@@ -1,5 +1,6 @@
 import React from "react";
 import propTypes from "prop-types";
+import { Button } from "semantic-ui-react";
 
 const Login = ({ onSubmit, username, password }) => {
   return (
@@ -25,7 +26,7 @@ const Login = ({ onSubmit, username, password }) => {
             onChange={password.onChange}
           />
         </div>
-        <button type="submit">login</button>
+        <Button type="submit">login</Button>
       </form>
     </div>
   );
