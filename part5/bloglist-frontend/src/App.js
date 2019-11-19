@@ -139,11 +139,7 @@ const App = ({
   const rows = () =>
     blogs
       .sort((b1, b2) => b2.likes - b1.likes)
-      .map(blog =>
-        blog.user.name === user.name ? (
-          <Blogs key={blog.id} blog={blog} />
-        ) : null
-      );
+      .map(blog => <Blogs key={blog.id} blog={blog} />);
 
   const padding = {
     paddingRight: 15

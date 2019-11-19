@@ -4,8 +4,16 @@ const blogReducer = (state = [], action) => {
   switch (action.type) {
   case "GET_ALL":
     return action.data;
-  case "CREATE_NEW":
+  case "CREATE_NEW_BLOG":
     return [...state, action.data];
+  case "ADD_COMMENT":
+    const id = action.data.id;
+    const blogToChange = state.find(blog => blog.id === id);
+    const changedBlog = {
+      ...blogToChange,
+      comments: [...blogToChange.comments, action.data.comment]
+    };
+    return state.map(blog => (blog.id !== id ? blog : changedBlog));
   case "ADD_LIKES": {
     const id = action.data.id;
     const blogToChange = state.find(blog => blog.id === id);
@@ -22,8 +30,6 @@ const blogReducer = (state = [], action) => {
   }
 };
 
-export default blogReducer;
-
 export const getAllBlogs = () => {
   return async dispatch => {
     const blogs = await blogService.getAll();
@@ -38,8 +44,18 @@ export const addNewBlog = () => {
   return async dispatch => {
     const newBlog = await blogService.create();
     dispatch({
-      type: "NEW_ANECDOTE",
+      type: "CREATE_NEW_BLOG",
       data: newBlog
+    });
+  };
+};
+
+export const addNewComment = (blog, comment) => {
+  return async dispatch => {
+    const updatedBlog = await blogService.createComment(blog, comment);
+    dispatch({
+      type: "ADD_COMMENT",
+      data: updatedBlog
     });
   };
 };
@@ -67,3 +83,5 @@ export const deleteBlog = blog => {
     });
   };
 };
+
+export default blogReducer;

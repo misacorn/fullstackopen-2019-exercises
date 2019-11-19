@@ -19,8 +19,7 @@ router.post("/:id/comments", async (request, response) => {
   const blog = await Blog.findById(request.params.id);
   blog.comments = blog.comments.concat(comment);
   await blog.save();
-
-  response.status(201).json(comment);
+  response.status(201).json(blog);
 });
 
 router.post("/", async (request, response) => {
