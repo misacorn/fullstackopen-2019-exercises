@@ -1,6 +1,11 @@
 import React from "react";
 import propTypes from "prop-types";
-import { Button } from "semantic-ui-react";
+import { Button, Input } from "semantic-ui-react";
+import styled from "styled-components";
+
+const Padding = styled.div`
+  padding: 15px 0;
+`;
 
 const Login = ({ onSubmit, username, password }) => {
   return (
@@ -10,7 +15,7 @@ const Login = ({ onSubmit, username, password }) => {
       <form onSubmit={onSubmit}>
         <div>
           Username:
-          <input
+          <Input
             className="input1"
             type={username.type}
             value={username.value}
@@ -19,14 +24,16 @@ const Login = ({ onSubmit, username, password }) => {
         </div>
         <div>
           Password:
-          <input
+          <Input
             className="input2"
             type={password.type}
             value={password.value}
             onChange={password.onChange}
           />
         </div>
-        <Button type="submit">login</Button>
+        <Padding>
+          <Button type="submit">login</Button>
+        </Padding>
       </form>
     </div>
   );

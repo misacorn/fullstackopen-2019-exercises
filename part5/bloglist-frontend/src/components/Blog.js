@@ -1,6 +1,7 @@
 import React from "react";
 import propTypes from "prop-types";
 import { connect } from "react-redux";
+import { Input, Button } from "semantic-ui-react";
 
 import { addNewComment } from "../reducers/blogReducer";
 import { setNotification } from "../reducers/notiReducer";
@@ -19,10 +20,14 @@ const Blog = ({
 
   const handleSubmit = e => {
     e.preventDefault();
-    const comment = e.target.comment.value;
-    e.target.comment.value = "";
-    addNewComment(blogDetails, comment);
-    setNotification("Added a new comment", 3000);
+    const comment = e.target.comment.value.trim();
+    if (comment) {
+      e.target.comment.value = "";
+      addNewComment(blogDetails, comment);
+      setNotification("Added a new comment", 3000);
+    } else {
+      setNotification("Don't leave an empty comment, please!", 3000);
+    }
   };
 
   const showComments = () =>
@@ -43,8 +48,8 @@ const Blog = ({
           <button onClick={() => removeBlog(blogDetails)}>remove</button>
           <h3>Comments</h3>
           <form onSubmit={handleSubmit}>
-            <input name="comment" />
-            <button type="submit">Add</button>
+            <Input name="comment" placeholder="Add a new comment..." />
+            <Button type="submit">Add</Button>
           </form>
           <ul>{showComments()}</ul>
         </>

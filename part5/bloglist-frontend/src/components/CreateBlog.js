@@ -1,8 +1,14 @@
 import React from "react";
 import propTypes from "prop-types";
 import { connect } from "react-redux";
+import { Button, Input } from "semantic-ui-react";
+import styled from "styled-components";
 
 import { updateForm, resetForm } from "../reducers/blogFormReducer";
+
+const Padding = styled.div`
+  padding: 15px 0;
+`;
 
 const CreateBlog = ({ handleSubmit, blogForm, updateForm }) => {
   const { title, author, url, likes } = blogForm;
@@ -15,21 +21,23 @@ const CreateBlog = ({ handleSubmit, blogForm, updateForm }) => {
     <form onSubmit={handleSubmit}>
       <div>
         Title:
-        <input name="title" value={title} onChange={onChange} />
+        <Input name="title" value={title} onChange={onChange} />
       </div>
       <div>
         Author:
-        <input name="author" value={author} onChange={onChange} />
+        <Input name="author" value={author} onChange={onChange} />
       </div>
       <div>
         Url:
-        <input name="url" value={url} onChange={onChange} />
+        <Input name="url" value={url} onChange={onChange} />
       </div>
       <div>
         Likes:
-        <input name="likes" value={likes} onChange={onChange} />
+        <Input name="likes" value={likes} onChange={onChange} />
       </div>
-      <button type="submit">create</button>
+      <Padding>
+        <Button type="submit">create</Button>
+      </Padding>
     </form>
   );
 };
@@ -51,7 +59,4 @@ CreateBlog.propTypes = {
   updateForm: propTypes.func.isRequired
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CreateBlog);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateBlog);
