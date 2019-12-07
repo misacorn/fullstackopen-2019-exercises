@@ -15,6 +15,7 @@ const Login = ({ onSubmit, username, password }) => {
         <Form.Group widths="equal">
           <Form.Input
             fluid
+            id="username"
             label="Username"
             placeholder="Username"
             className="input1"
@@ -24,6 +25,7 @@ const Login = ({ onSubmit, username, password }) => {
           />
           <Form.Input
             fluid
+            id="password"
             label="Password"
             placeholder="Password"
             className="input2"
@@ -33,7 +35,7 @@ const Login = ({ onSubmit, username, password }) => {
           />
         </Form.Group>
         <Padding>
-          <Form.Button>Login</Form.Button>
+          <Form.Button id="login">Login</Form.Button>
         </Padding>
       </Form>
     </div>

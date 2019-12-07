@@ -10,4 +10,12 @@ describe("Blogs ", () => {
   it("login form can be opened", () => {
     cy.contains("login").click();
   });
+
+  it("user can login", () => {
+    cy.contains("login").click();
+    cy.get("#username").type("111");
+    cy.get("#password").type("111");
+    cy.get("#login").click();
+    cy.contains("111 logged in");
+  });
 });
