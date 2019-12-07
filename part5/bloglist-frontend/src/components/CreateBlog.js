@@ -21,22 +21,22 @@ const CreateBlog = ({ handleSubmit, blogForm, updateForm }) => {
     <form onSubmit={handleSubmit}>
       <div>
         Title:
-        <Input name="title" value={title} onChange={onChange} />
+        <Input id="title" name="title" value={title} onChange={onChange} />
       </div>
       <div>
         Author:
-        <Input name="author" value={author} onChange={onChange} />
+        <Input id="author" name="author" value={author} onChange={onChange} />
       </div>
       <div>
         Url:
-        <Input name="url" value={url} onChange={onChange} />
+        <Input id="url" name="url" value={url} onChange={onChange} />
       </div>
       <div>
         Likes:
-        <Input name="likes" value={likes} onChange={onChange} />
+        <Input id="likes" name="likes" value={likes} onChange={onChange} />
       </div>
       <Padding>
-        <Button type="submit">create</Button>
+        <Button id="submit" type="submit">create</Button>
       </Padding>
     </form>
   );
