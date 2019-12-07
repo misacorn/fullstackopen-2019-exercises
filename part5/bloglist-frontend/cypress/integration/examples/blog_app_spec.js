@@ -1,6 +1,13 @@
-describe("Blog ", function() {
-  it("front page can be opened", function() {
+describe("Blogs ", () => {
+  beforeEach(() => {
     cy.visit("http://localhost:3000");
-    cy.contains("Blog");
+  });
+
+  it("front page can be opened", () => {
+    cy.contains("Blogs");
+  });
+
+  it("login form can be opened", () => {
+    cy.contains("login").click();
   });
 });
