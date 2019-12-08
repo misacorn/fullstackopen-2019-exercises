@@ -15,6 +15,11 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static("build"));
 
+if (process.env.NODE_ENV === "test") {
+  const testingRouter = require("./controllers/testing");
+  app.use("/api/testing", testingRouter);
+}
+
 console.log("connecting to", config.MONGODB_URI);
 
 mongoose
